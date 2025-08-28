@@ -1,6 +1,8 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+
 export default function Dashboard() {
   const [status, setStatus] = useState<boolean[]>([])
   useEffect(() => {
@@ -15,10 +17,12 @@ export default function Dashboard() {
           <div className="flex flex-col p-1 w-[100px]">
             {
               status.map((s, i) => (
-                <div key={i} className="flex gap-2 justify-center items-start text-m" >
-                  <div className={`rounded-full w-3 h-3 ${s ? "bg-green-500" : "bg-red-500"}`}></div>
-                  <p>Пүү {i + 1}</p>
-                </div>
+                <Link key={i} href={`/puu/${i + 1}`}>
+                  <div className="flex gap-2 justify-center items-start text-m" >
+                    <div className={`rounded-full w-3 h-3 ${s ? "bg-green-500" : "bg-red-500"}`}></div>
+                    <p>Пүү {i + 1}</p>
+                  </div>
+                </Link>
               ))
             }
           </div>
@@ -37,17 +41,19 @@ export default function Dashboard() {
 
               {
                 status.map((s, i) => (
-                  <div key={i} className={`absolute w-5 h-5 ${s ? "bg-green-500" : "bg-red-500"}`} style={{
-                    top: `${i * 20}px`,
-                    left: `${i * 20}px`,
-                    WebkitMaskImage: "url('/map-pin.png')",
-                    WebkitMaskRepeat: "no-repeat",
-                    WebkitMaskSize: "cover",
-                    maskImage: "url('/map-pin.png')",
-                    maskRepeat: "no-repeat",
-                    maskSize: "cover",
-                  }}>
-                  </div>
+                  <Link key={i} href={`/puu/${i + 1}`}>
+                    <div className={`absolute w-5 h-5 ${s ? "bg-green-500" : "bg-red-500"}`} style={{
+                      top: `${i * 20}px`,
+                      left: `${i * 20}px`,
+                      WebkitMaskImage: "url('/map-pin.png')",
+                      WebkitMaskRepeat: "no-repeat",
+                      WebkitMaskSize: "cover",
+                      maskImage: "url('/map-pin.png')",
+                      maskRepeat: "no-repeat",
+                      maskSize: "cover",
+                    }}>
+                    </div>
+                  </Link>
                 ))
               }
             </div>
