@@ -7,12 +7,15 @@ import RDsensor from "@/components/puu/rdSensor";
 import Bracket from "@/components/puu/bracket";
 import CarHead from "@/components/puu/carHead";
 import Trailer from "@/components/puu/trailer";
+import axios from "axios";
+import { url } from "inspector";
 export default function PuuPage() {
   const { id } = useParams(); // dynamic route param
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
     if (!id) return;
+    
     // TODO id gaar ni api aa set-leed daraa ni data-g ni avna
     const data = {
       id: 1,
@@ -29,6 +32,16 @@ export default function PuuPage() {
       cam8: '1234',
     }
     setData(data)
+    const webcamUrl =''// TODO here insert url web url
+    axios
+    .get(webcamUrl)
+    .then((response) => {
+      console.log("Success:", response.data);
+      setData({...data,cam1:response?.data?.container})
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
   }, []);
 
   console.log(data);
