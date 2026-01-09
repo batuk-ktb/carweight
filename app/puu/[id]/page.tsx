@@ -14,20 +14,21 @@ export default function PuuPage() {
   const [data, setData] = useState<any>(null);
   const [loader, setLoader] = useState(false)
 
-  const int16PairToFloat = (high:any, low:any)=> {
-    // Combine high and low into 32-bit unsigned integer
-    const combined = (high << 16) | low;
+  function int16PairToFloat(high: number, low: number): number {
+  // Combine high and low into 32-bit unsigned integer
+  const combined: number = (high << 16) | low;
 
-    // Create an ArrayBuffer to store the 32-bit value
-    const buffer = new ArrayBuffer(4);
-    const view = new DataView(buffer);
+  // Create an ArrayBuffer to store the 32-bit value
+  const buffer: ArrayBuffer = new ArrayBuffer(4);
+  const view: DataView = new DataView(buffer);
 
-    // Set the 32-bit unsigned int in big-endian
-    view.setUint32(0, combined, false); // false = big-endian
+  // Set the 32-bit unsigned int in big-endian
+  view.setUint32(0, combined, false); // false = big-endian
 
-    // Read as 32-bit float
-    return view.getFloat32(0, false);
-  }
+  // Read as 32-bit float
+  return view.getFloat32(0, false);
+}
+
  useEffect(() => {
   if (!id) return;
 
