@@ -14,6 +14,20 @@ export default function PuuPage() {
   const [data, setData] = useState<any>(null);
   const [loader, setLoader] = useState(false)
 
+  const int16PairToFloat = (high:any, low:any)=> {
+    // Combine high and low into 32-bit unsigned integer
+    const combined = (high << 16) | low;
+
+    // Create an ArrayBuffer to store the 32-bit value
+    const buffer = new ArrayBuffer(4);
+    const view = new DataView(buffer);
+
+    // Set the 32-bit unsigned int in big-endian
+    view.setUint32(0, combined, false); // false = big-endian
+
+    // Read as 32-bit float
+    return view.getFloat32(0, false);
+  }
  useEffect(() => {
   if (!id) return;
 
@@ -139,7 +153,8 @@ export default function PuuPage() {
             {/* suuri heseg */}
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105" />
             <div className="w-[50vw] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105">
-              {data.allInfo[23]} {data.allInfo[24]}
+              {data?.allInfo[23]} {data?.allInfo[24]}
+              {int16PairToFloat(data?.allInfo[23], data?.allInfo[24])}
               </div> 
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%)] transition-transform duration-300 hover:scale-105" />
           </div>
