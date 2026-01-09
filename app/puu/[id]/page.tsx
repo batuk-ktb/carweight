@@ -52,19 +52,19 @@ export default function PuuPage() {
       // Data-г default утгатай болгох
       console.log('allinfo', allInfo)
       setData({
-        allInfo:allInfo || null,
+        allInfo:allInfo.data || null,
         id: Number(id),
-        rfid: rfidRes?.data?.rfid || null,
-        light: lightRes?.data?.light || "unknown",
-        lpr: lprRes?.data?.lpr || null,
-        cam1: cam1Res?.data?.value || null,
-        cam2: cam2Res?.data?.value || null,
-        cam3: cam3Res?.data?.value || null,
-        cam4: cam4Res?.data?.value || null,
-        cam5: cam5Res?.data?.value || null,
-        cam6: cam6Res?.data?.value || null,
-        cam7: cam7Res?.data?.value || null,
-        cam8: cam8Res?.data?.value || null,
+        // rfid: rfidRes?.data?.rfid || null,
+        // light: lightRes?.data?.light || "unknown",
+        // lpr: lprRes?.data?.lpr || null,
+        // cam1: cam1Res?.data?.value || null,
+        // cam2: cam2Res?.data?.value || null,
+        // cam3: cam3Res?.data?.value || null,
+        // cam4: cam4Res?.data?.value || null,
+        // cam5: cam5Res?.data?.value || null,
+        // cam6: cam6Res?.data?.value || null,
+        // cam7: cam7Res?.data?.value || null,
+        // cam8: cam8Res?.data?.value || null,
       });
     } catch (error) {
       console.error("PUU API error:", error);
@@ -138,7 +138,9 @@ export default function PuuPage() {
           <div className="flex ">
             {/* suuri heseg */}
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105" />
-            <div className="w-[50vw] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105" />
+            <div className="w-[50vw] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105">
+              {data.allInfo[23]} {data.allInfo[24]}
+              </div> 
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%)] transition-transform duration-300 hover:scale-105" />
           </div>
         </div>
