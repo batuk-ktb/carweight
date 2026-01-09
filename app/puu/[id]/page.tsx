@@ -51,6 +51,7 @@ export default function PuuPage() {
 
       // Data-г default утгатай болгох
       setData({
+        allInfo:allInfo?.data.value || null,
         id: Number(id),
         rfid: rfidRes?.data?.rfid || null,
         light: lightRes?.data?.light || "unknown",
@@ -79,7 +80,7 @@ export default function PuuPage() {
 }, [id]);
 
 
-  console.log(data.allInfo);
+  console.log(data?.allInfo);
   if (loader) {
     return <div>
       <Loader></Loader>
