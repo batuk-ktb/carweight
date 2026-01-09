@@ -22,6 +22,7 @@ export default function PuuPage() {
 
     try {
       const [
+        allInfo,
         rfidRes,
         lightRes,
         lprRes,
@@ -34,6 +35,7 @@ export default function PuuPage() {
         cam7Res,
         cam8Res,
       ] = await Promise.all([
+        axios.get(`http://127.0.0.1:30511/read/3/${29 + (parseInt(id.toString())-1) * 30}/30`),
         axios.get(`/api/puu/${id}/rfid`),
         axios.get(`/api/puu/${id}/light`),
         axios.get(`/api/puu/${id}/lpr`),
@@ -68,20 +70,7 @@ export default function PuuPage() {
       // Error гарвал хоосон эсвэл default data
       
     } finally {
-      setData({
-        id: Number(id),
-        rfid: 1234,
-        light: "red",
-        lpr: 'qwe2345',
-        cam1: 1234,
-        cam2: 124,
-        cam3: 1234,
-        cam4: 1234,
-        cam5: 1234,
-        cam6: 1234,
-        cam7: 1231,
-        cam8: 1234,
-      });
+      
       setLoader(false);
     }
   };
@@ -90,7 +79,7 @@ export default function PuuPage() {
 }, [id]);
 
 
-  console.log(data);
+  console.log(data.allInfo);
   if (loader) {
     return <div>
       <Loader></Loader>
