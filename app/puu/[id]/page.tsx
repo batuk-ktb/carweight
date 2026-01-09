@@ -50,6 +50,7 @@ export default function PuuPage() {
       ]);
 
       // Data-г default утгатай болгох
+      console.log('allinfo', allInfo)
       setData({
         allInfo:allInfo || null,
         id: Number(id),
