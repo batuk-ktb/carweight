@@ -154,7 +154,6 @@ export default function PuuPage() {
             {/* suuri heseg */}
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105" />
             <div className="w-[50vw] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105">
-              {data?.allInfo[23]} {data?.allInfo[24]}
               {int16PairToFloat(data?.allInfo[24], data?.allInfo[23])}
               </div> 
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%)] transition-transform duration-300 hover:scale-105" />
