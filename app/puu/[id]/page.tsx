@@ -12,59 +12,124 @@ import { url } from "inspector";
 export default function PuuPage() {
   const { id } = useParams(); // dynamic route param
   const [data, setData] = useState<any>(null);
+  const [loader, setLoader] = useState(false)
 
-  useEffect(() => {
-    if (!id) return;
-    
-    // TODO id gaar ni api aa set-leed daraa ni data-g ni avna
-    const data = {
-      id: 1,
-      rfid: '12341234',
-      light: 'green', // green, orange, red
-      lpr: 'LPR-1234',
-      cam1: '134',
-      cam2: '134',
-      cam3: '1234',
-      cam4: '1234',
-      cam5: '134',
-      cam6: '134',
-      cam7: '1234',
-      cam8: '1234',
+ useEffect(() => {
+  if (!id) return;
+
+  const fetchAllData = async () => {
+    setLoader(true);
+
+    try {
+      const [
+        rfidRes,
+        lightRes,
+        lprRes,
+        cam1Res,
+        cam2Res,
+        cam3Res,
+        cam4Res,
+        cam5Res,
+        cam6Res,
+        cam7Res,
+        cam8Res,
+      ] = await Promise.all([
+        axios.get(`/api/puu/${id}/rfid`),
+        axios.get(`/api/puu/${id}/light`),
+        axios.get(`/api/puu/${id}/lpr`),
+        axios.get(`/api/puu/${id}/cam/1`),
+        axios.get(`/api/puu/${id}/cam/2`),
+        axios.get(`/api/puu/${id}/cam/3`),
+        axios.get(`/api/puu/${id}/cam/4`),
+        axios.get(`/api/puu/${id}/cam/5`),
+        axios.get(`/api/puu/${id}/cam/6`),
+        axios.get(`/api/puu/${id}/cam/7`),
+        axios.get(`/api/puu/${id}/cam/8`),
+      ]);
+
+      // Data-г default утгатай болгох
+      setData({
+        id: Number(id),
+        rfid: rfidRes?.data?.rfid || null,
+        light: lightRes?.data?.light || "unknown",
+        lpr: lprRes?.data?.lpr || null,
+        cam1: cam1Res?.data?.value || null,
+        cam2: cam2Res?.data?.value || null,
+        cam3: cam3Res?.data?.value || null,
+        cam4: cam4Res?.data?.value || null,
+        cam5: cam5Res?.data?.value || null,
+        cam6: cam6Res?.data?.value || null,
+        cam7: cam7Res?.data?.value || null,
+        cam8: cam8Res?.data?.value || null,
+      });
+    } catch (error) {
+      console.error("PUU API error:", error);
+
+      // Error гарвал хоосон эсвэл default data
+      
+    } finally {
+      setData({
+        id: Number(id),
+        rfid: 1234,
+        light: "red",
+        lpr: 'qwe2345',
+        cam1: 1234,
+        cam2: 124,
+        cam3: 1234,
+        cam4: 1234,
+        cam5: 1234,
+        cam6: 1234,
+        cam7: 1231,
+        cam8: 1234,
+      });
+      setLoader(false);
     }
-    setData(data)
-    const webcamUrl =''// TODO here insert url web url
-    axios
-    .get(webcamUrl)
-    .then((response) => {
-      console.log("Success:", response.data);
-      setData({...data,cam1:response?.data?.container})
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-    });
-  }, []);
+  };
+
+  fetchAllData();
+}, [id]);
+
 
   console.log(data);
-  if (data === null) {
+  if (loader) {
     return <div>
       <Loader></Loader>
     </div >
   }
 
   return (
-    <div>
+    <div >
       <div className="w-full flex justify-center items-center">
         <h1>Puu {id}</h1>
       </div>
-      <div className="flex mt-4">
-        <div className="flex flex-col gap-2">
-          <p>Гэрлийн төлөв</p>
-          <div className="flex flex-col gap-2 items-center">
-            <div className={`w-5 h-5 rounded-full ${data?.light === 'green' ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-            <div className={`w-5 h-5 rounded-full ${data?.light === 'orange' ? 'bg-orange-500' : 'bg-gray-300'}`}></div>
-            <div className={`w-5 h-5 rounded-full ${data?.light === 'red' ? 'bg-red-500' : 'bg-gray-300'}`}></div>
+      <div className="flex mt-4 justify-center items-center">
+        {/* ===== LEFT (LIGHT STATUS) ===== */}
+          <div className="flex flex-col gap-3 items-center">
+            <p className="text-sm text-slate-600">
+              Гэрлийн төлөв
+            </p>
+
+            <div className="flex flex-col gap-2">
+              <div
+                className={`w-4 h-4 rounded-full
+                ${data?.light === "green"
+                  ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+                  : "bg-slate-300"}`}
+              />
+              <div
+                className={`w-4 h-4 rounded-full
+                ${data?.light === "orange"
+                  ? "bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.6)]"
+                  : "bg-slate-300"}`}
+              />
+              <div
+                className={`w-4 h-4 rounded-full
+                ${data?.light === "red"
+                  ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+                  : "bg-slate-300"}`}
+              />
+            </div>
           </div>
-        </div>
         <div className="flex flex-col justify-center items-center mt-4">
           <div className="flex justify-between items-center mb-2 w-[50vw]">
             {/* deed heseg 2 heseg medregchuud */}
@@ -90,15 +155,15 @@ export default function PuuPage() {
           <p>RFID: {data?.rfid}</p>
         </div>
       </div>
-      <div className="flex gap-1 py-4 mt-5">
+      <div className=" flex justify-center items-center gap-1 py-4 mt-10">
         {/* mashin bolood camera heseg */}
         <CarHead data={data} />
-        <Trailer data={{ cam1: data.cam1, cam2: data.cam2 }} />
+        <Trailer data={{ cam1: data?.cam1, cam2: data?.cam2 }} />
         <div className="flex gap-2">
-          <Trailer data={{ cam1: data.cam3, cam2: data.cam4 }} />
-          <Trailer data={{ cam1: data.cam5, cam2: data.cam6 }} />
+          <Trailer data={{ cam1: data?.cam3, cam2: data?.cam4 }} />
+          <Trailer data={{ cam1: data?.cam5, cam2: data?.cam6 }} />
         </div>
-        <Trailer data={{ cam1: data.cam7, cam2: data.cam8 }} />
+        <Trailer data={{ cam1: data?.cam7, cam2: data?.cam8 }} />
       </div>
     </div>
   );

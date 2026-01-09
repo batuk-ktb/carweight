@@ -1,26 +1,48 @@
-@import "tailwindcss";
+  @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
   }
+
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #0a0a0a;
+      --foreground: #ededed;
+    }
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  /* for loader */
+/* TailwindCSS custom animations */
+
+/* Truck moves left to right on road */
+@keyframes truck-move {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(160px); } /* Хөдөлж буй зай */
+  100% { transform: translateX(0); }
+}
+.animate-truck-move {
+  animation: truck-move 3s ease-in-out infinite;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Wheels spin faster to match truck movement */
+@keyframes wheel-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); } /* 3 revolutions per loop */
+}
+.animate-wheel-spin {
+  animation: wheel-spin 3s linear infinite; /* Машины хөдөлгөөнтэй ижил хугацаанд */
 }

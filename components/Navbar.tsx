@@ -15,7 +15,7 @@ export default function Navbar() {
     <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
       <div className="font-bold text-lg">MyApp</div>
       <div className="flex items-center gap-4">
-        <DropdownMenu.Root>
+        {/* <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button className="px-3 py-1 bg-blue-700 rounded hover:bg-blue-800">
               ☰
@@ -35,7 +35,7 @@ export default function Navbar() {
               <button onClick={handleLogout}>Logout</button>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
-        </DropdownMenu.Root>
+        </DropdownMenu.Root> */}
       </div>
     </nav>
   );

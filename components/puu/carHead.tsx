@@ -3,7 +3,7 @@ const CarHead = ({ data }: any) => {
 
     <div className="relative">
       {/* lpr bolood tolgoi heseg */}
-      <p className="absolute -top-5 left-0">LPR:{data.lpr}</p>
+      <p className="absolute -top-5 left-0">LPR:{data?.lpr}</p>
       <div className="flex justify-end items-center">
         <div className="w-[50px] h-[80px] border border-blue-500 rounded-l-lg bg-blue-500 ">
           {/* hamar */}
