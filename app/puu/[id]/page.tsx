@@ -7,12 +7,21 @@ import RDsensor from "@/components/puu/rdSensor";
 import Bracket from "@/components/puu/bracket";
 import CarHead from "@/components/puu/carHead";
 import Trailer from "@/components/puu/trailer";
+import RadioButton from "@/components/RadioButton"
 import axios from "axios";
 import { url } from "inspector";
+
+export type OperatorStatus = "on" | "off";
+
 export default function PuuPage() {
   const { id } = useParams(); // dynamic route param
   const [data, setData] = useState<any>(null);
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
+
+  const [status, setStatus] = useState<OperatorStatus>("off");
+  const [red, setRed] = useState(false)
+  const [yellow, setYellow] = useState(false)
+  const [green, setGreen] = useState(false)
 
   function int16PairToFloat(high: number, low: number): number {
   // Combine high and low into 32-bit unsigned integer
@@ -65,12 +74,14 @@ export default function PuuPage() {
       ]);
 
       // Data-г default утгатай болгох
-      console.log('allinfo', allInfo)
       setData({
         allInfo:allInfo.data || null,
         id: Number(id),
         // rfid: rfidRes?.data?.rfid || null,
-        // light: lightRes?.data?.light || "unknown",
+        barrier1:allInfo?.data[1],
+        barrier2:allInfo?.data[2],
+        barrier3:allInfo?.data[3],
+        barrier4:allInfo?.data[4],
         // lpr: lprRes?.data?.lpr || null,
         // cam1: cam1Res?.data?.value || null,
         // cam2: cam2Res?.data?.value || null,
@@ -81,13 +92,13 @@ export default function PuuPage() {
         // cam7: cam7Res?.data?.value || null,
         // cam8: cam8Res?.data?.value || null,
       });
+      setRed(allInfo?.data[7] === 1 )
+      setYellow(allInfo?.data[6] === 1)
+      setGreen(allInfo?.data[5] === 1)
     } catch (error) {
       console.error("PUU API error:", error);
-
       // Error гарвал хоосон эсвэл default data
-      
     } finally {
-      
       setLoader(false);
     }
   };
@@ -96,7 +107,6 @@ export default function PuuPage() {
 }, [id]);
 
 
-  console.log(data?.allInfo);
   if (loader) {
     return <div>
       <Loader></Loader>
@@ -108,6 +118,11 @@ export default function PuuPage() {
       <div className="w-full flex justify-center items-center">
         <h1>Puu {id}</h1>
       </div>
+      <div className="w-full flec- justify-end items-center">
+        <RadioButton value={status}
+        onChange={setStatus}
+      /> 
+      </div>
       <div className="flex mt-4 justify-center items-center">
         {/* ===== LEFT (LIGHT STATUS) ===== */}
           <div className="flex flex-col gap-3 items-center">
@@ -118,19 +133,19 @@ export default function PuuPage() {
             <div className="flex flex-col gap-2">
               <div
                 className={`w-4 h-4 rounded-full
-                ${data?.light === "green"
+                ${green
                   ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"
                   : "bg-slate-300"}`}
               />
               <div
                 className={`w-4 h-4 rounded-full
-                ${data?.light === "orange"
+                ${yellow
                   ? "bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.6)]"
                   : "bg-slate-300"}`}
               />
               <div
                 className={`w-4 h-4 rounded-full
-                ${data?.light === "red"
+                ${red
                   ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"
                   : "bg-slate-300"}`}
               />
@@ -140,21 +155,21 @@ export default function PuuPage() {
           <div className="flex justify-between items-center mb-2 w-[50vw]">
             {/* deed heseg 2 heseg medregchuud */}
             <div className=" flex justify-center items-end">
-              <RDsensor />
+              <RDsensor status = {data?.barrier1} />
               <Bracket />
-              <RDsensor />
+              <RDsensor status = {data?.barrier2} />
             </div>
             <div className=" flex justify-center items-end">
-              <RDsensor />
+              <RDsensor status = {data?.barrier3} />
               <Bracket />
-              <RDsensor />
+              <RDsensor status = {data?.barrier4}/>
             </div>
           </div>
           <div className="flex ">
             {/* suuri heseg */}
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105" />
             <div className="w-[50vw] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105">
-              {int16PairToFloat(data?.allInfo[24], data?.allInfo[23])}
+              {int16PairToFloat(data?.allInfo[22], data?.allInfo[21])}
               </div> 
             <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%)] transition-transform duration-300 hover:scale-105" />
           </div>
