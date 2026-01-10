@@ -18,7 +18,7 @@ export default function PuuPage() {
   const [data, setData] = useState<any>(null);
   const [loader, setLoader] = useState(false);
 
-  const [status, setStatus] = useState<OperatorStatus>("off");
+  const [operatorMode, setOperatorMode] = useState<OperatorStatus>("off");
   const [red, setRed] = useState(false)
   const [yellow, setYellow] = useState(false)
   const [green, setGreen] = useState(false)
@@ -119,8 +119,7 @@ export default function PuuPage() {
         <h1>Puu {id}</h1>
       </div>
       <div className="w-full flec- justify-end items-center">
-        <RadioButton value={status}
-        onChange={setStatus}
+        <RadioButton value={operatorMode} onChange={setOperatorMode}
       /> 
       </div>
       <div className="flex mt-4 justify-center items-center">
@@ -132,23 +131,41 @@ export default function PuuPage() {
 
             <div className="flex flex-col gap-2">
               <div
-                className={`w-4 h-4 rounded-full
-                ${green
-                  ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-                  : "bg-slate-300"}`}
+                onClick={() => {
+                  if (operatorMode === "on") setGreen(!green)
+                }}
+                className={`w-4 h-4 rounded-full cursor-pointer
+                  ${green
+                    ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+                    : "bg-slate-300"}
+                  ${operatorMode === "off" ? "opacity-40 cursor-not-allowed" : ""}
+                `}
               />
+
               <div
-                className={`w-4 h-4 rounded-full
-                ${yellow
-                  ? "bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.6)]"
-                  : "bg-slate-300"}`}
-              />
+                  onClick={() => {
+                    if (operatorMode === "on") setYellow(!yellow)
+                  }}
+                  className={`w-4 h-4 rounded-full cursor-pointer
+                    ${yellow
+                      ? "bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.6)]"
+                      : "bg-slate-300"}
+                    ${operatorMode === "off" ? "opacity-40 cursor-not-allowed" : ""}
+                  `}
+                />
+
               <div
-                className={`w-4 h-4 rounded-full
-                ${red
-                  ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-                  : "bg-slate-300"}`}
+                onClick={() => {
+                  if (operatorMode === "on") setRed(!red)
+                }}
+                className={`w-4 h-4 rounded-full cursor-pointer
+                  ${red
+                    ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+                    : "bg-slate-300"}
+                  ${operatorMode === "off" ? "opacity-40 cursor-not-allowed" : ""}
+                `}
               />
+
             </div>
           </div>
         <div className="flex flex-col justify-center items-center mt-4">
