@@ -66,9 +66,9 @@ export default function PuuPage() {
 
  useEffect(() => {
   if (!id) return;
-
+  let isFirstLoad = true;
   const fetchAllData = async () => {
-    setLoader(true);
+    if (isFirstLoad) setLoader(true);
 
     try {
       const [
@@ -125,7 +125,8 @@ export default function PuuPage() {
       console.error("PUU API error:", error);
       // Error гарвал хоосон эсвэл default data
     } finally {
-      setLoader(false);
+      if (isFirstLoad) setLoader(false);
+      if (isFirstLoad) isFirstLoad = false;
     }
   };
 
@@ -135,7 +136,7 @@ export default function PuuPage() {
     // 4. component unmount болох үед clean-up хийх
     return () => clearInterval(interval);
 
-}, []);
+}, [id]);
 
 
   if (loader) {
