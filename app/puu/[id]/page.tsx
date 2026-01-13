@@ -10,11 +10,37 @@ import Trailer from "@/components/puu/trailer";
 import RadioButton from "@/components/RadioButton"
 import axios from "axios";
 import { url } from "inspector";
+import { send } from "process";
 
 export type OperatorStatus = "on" | "off";
 
+type CameraGroup = {
+  [key: `cam${number}`]: string;
+};
+
+const ipCameraList: Record<number, CameraGroup> = {
+  1: {
+    cam1: "192.168.1.1",
+    cam2: "172.16.92.11",
+    cam3: "172.16.92.10",
+    cam4: "172.16.92.11",
+    cam5: "172.16.92.12",
+    cam6: "172.16.92.10",
+    cam7: "172.16.92.11",
+    cam8: "172.16.92.12",
+  },
+};
+
 export default function PuuPage() {
-  const { id } = useParams(); // dynamic route param
+  const params = useParams();
+  const rawId = params?.id;
+
+  // хамгаалалт
+  if (!rawId || Array.isArray(rawId)) {
+    return null; // эсвэл error UI
+  }
+
+  const id = Number(rawId);
   const [data, setData] = useState<any>(null);
   const [loader, setLoader] = useState(false);
 
@@ -50,27 +76,27 @@ export default function PuuPage() {
         // rfidRes,
         // lightRes,
         // lprRes,
-        // cam1Res,
-        // cam2Res,
-        // cam3Res,
-        // cam4Res,
-        // cam5Res,
-        // cam6Res,
-        // cam7Res,
-        // cam8Res,
+        cam1Res,
+        cam2Res,
+        cam3Res,
+        cam4Res,
+        cam5Res,
+        cam6Res,
+        cam7Res,
+        cam8Res,
       ] = await Promise.all([
         axios.get(`http://127.0.0.1:30511/read/3/${29 + (parseInt(id.toString())-1) * 30}/30`),
         // axios.get(`/api/puu/${id}/rfid`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
-        // axios.get(`/api/puu/${id}/cam/1`),
-        // axios.get(`/api/puu/${id}/cam/2`),
-        // axios.get(`/api/puu/${id}/cam/3`),
-        // axios.get(`/api/puu/${id}/cam/4`),
-        // axios.get(`/api/puu/${id}/cam/5`),
-        // axios.get(`/api/puu/${id}/cam/6`),
-        // axios.get(`/api/puu/${id}/cam/7`),
-        // axios.get(`/api/puu/${id}/cam/8`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
       ]);
 
       // Data-г default утгатай болгох
@@ -83,14 +109,14 @@ export default function PuuPage() {
         barrier3:allInfo?.data[3],
         barrier4:allInfo?.data[4],
         // lpr: lprRes?.data?.lpr || null,
-        // cam1: cam1Res?.data?.value || null,
-        // cam2: cam2Res?.data?.value || null,
-        // cam3: cam3Res?.data?.value || null,
-        // cam4: cam4Res?.data?.value || null,
-        // cam5: cam5Res?.data?.value || null,
-        // cam6: cam6Res?.data?.value || null,
-        // cam7: cam7Res?.data?.value || null,
-        // cam8: cam8Res?.data?.value || null,
+        cam1: cam1Res?.data?.container || null,
+        cam2: cam2Res?.data?.container || null,
+        cam3: cam3Res?.data?.container || null,
+        cam4: cam4Res?.data?.container || null,
+        cam5: cam5Res?.data?.container || null,
+        cam6: cam6Res?.data?.container || null,
+        cam7: cam7Res?.data?.container || null,
+        cam8: cam8Res?.data?.container || null,
       });
       setRed(allInfo?.data[7] === 1 )
       setYellow(allInfo?.data[6] === 1)
@@ -104,7 +130,12 @@ export default function PuuPage() {
   };
 
   fetchAllData();
-}, [id]);
+  const interval = setInterval(fetchAllData, 5000); // 5000ms = 5 sec
+
+    // 4. component unmount болох үед clean-up хийх
+    return () => clearInterval(interval);
+
+}, []);
 
 
   if (loader) {
@@ -112,6 +143,29 @@ export default function PuuPage() {
       <Loader></Loader>
     </div >
   }
+
+  async function sendSmallData() {
+  try {
+    const payload = {
+      container: "ABC123",
+      ipaddress: "192.168.1.1",
+    };
+
+    const res = await axios.post(
+      "http://127.0.0.1:8000/api/simple/", // Django endpoint
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("POST Response:", res.data);
+  } catch (err) {
+    console.error("POST Error:", err);
+  }
+}
 
   return (
     <div >
@@ -132,7 +186,10 @@ export default function PuuPage() {
             <div className="flex flex-col gap-2">
               <div
                 onClick={() => {
-                  if (operatorMode === "on") setGreen(!green)
+                  if (operatorMode === "on") {
+                    setGreen(!green)
+                    sendSmallData(); 
+                    }
                 }}
                 className={`w-4 h-4 rounded-full cursor-pointer
                   ${green
@@ -144,7 +201,7 @@ export default function PuuPage() {
 
               <div
                   onClick={() => {
-                    if (operatorMode === "on") setYellow(!yellow)
+                    if (operatorMode === "on") {setYellow(!yellow) , sendSmallData(); }
                   }}
                   className={`w-4 h-4 rounded-full cursor-pointer
                     ${yellow
@@ -156,7 +213,7 @@ export default function PuuPage() {
 
               <div
                 onClick={() => {
-                  if (operatorMode === "on") setRed(!red)
+                  if (operatorMode === "on") {setRed(!red), sendSmallData();}
                 }}
                 className={`w-4 h-4 rounded-full cursor-pointer
                   ${red

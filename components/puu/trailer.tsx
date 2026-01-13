@@ -11,14 +11,15 @@ const Trailer = ({ data }: TrailerProps) => {
 
       {/* Баруун камер */}
       <div className="flex flex-col items-center">
-        <div className="w-[200px] h-[120px] border bg-black overflow-hidden">
+        {/* <div className="w-[200px] h-[120px] border bg-black overflow-hidden">
           <img
             src={data?.cam1 || "/no-signal.jpg"}
             alt="Right camera"
             className="w-full h-full object-cover"
           />
-        </div>
+        </div> */}
         <p>Баруун тал</p>
+        <p>{data.cam1}</p>
       </div>
 
       {/* Trailer body */}
@@ -26,14 +27,15 @@ const Trailer = ({ data }: TrailerProps) => {
 
       {/* Зүүн камер */}
       <div className="flex flex-col items-center">
-        <div className="w-[200px] h-[120px] border bg-black overflow-hidden">
+        {/* <div className="w-[200px] h-[120px] border bg-black overflow-hidden">
           <img
             src={data?.cam2 || "/no-signal.jpg"}
             alt="Left camera"
             className="w-full h-full object-cover"
           />
-        </div>
+        </div> */}
         <p>Зүүн тал</p>
+        <p>{data.cam2}</p>
       </div>
 
     </div>
