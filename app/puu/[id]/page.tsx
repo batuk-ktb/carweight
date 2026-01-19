@@ -125,7 +125,7 @@ export default function PuuPage() {
         cam7Res,
         cam8Res,
       ] = await Promise.all([
-        axios.get(`http://127.0.0.1:30511/read/3/${29 + (parseInt(id.toString())-1) * 30}/30`),
+        axios.get(`http://127.0.0.1:30511/read/3/${(parseInt(id.toString())-1) * 30}/30`),
         // axios.get(`/api/puu/${id}/rfid`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
