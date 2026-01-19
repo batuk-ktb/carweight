@@ -188,12 +188,12 @@ export default function PuuPage() {
   async function sendSmallData() {
   try {
     const payload = {
-      container: "ABC123",
-      ipaddress: "192.168.1.1",
-    };
+    "reg_addr": 12,
+    "reg_value": 1
+  }
 
     const res = await axios.post(
-      "http://127.0.0.1:8000/api/simple/", // Django endpoint
+      "http://127.0.0.1:30512/write/", // Django endpoint
       payload,
       {
         headers: {
