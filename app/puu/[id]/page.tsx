@@ -185,15 +185,15 @@ export default function PuuPage() {
     </div >
   }
 
-  async function sendSmallData() {
+  async function sendSmallData(value: any) {
   try {
     const payload = {
     "reg_addr": 12,
-    "reg_value": 1
+    "reg_value": value
   }
 
     const res = await axios.post(
-      "http://127.0.0.1:30512/write/", // Django endpoint
+      "http://127.0.0.1:30511/write/", // Django endpoint
       payload,
       {
         headers: {
@@ -229,7 +229,7 @@ export default function PuuPage() {
                 onClick={() => {
                   if (operatorMode === "on") {
                     setGreen(!green)
-                    sendSmallData(); 
+                    sendSmallData(green ? 1: 0); 
                     }
                 }}
                 className={`w-4 h-4 rounded-full cursor-pointer
@@ -242,7 +242,7 @@ export default function PuuPage() {
 
               <div
                   onClick={() => {
-                    if (operatorMode === "on") {setYellow(!yellow) , sendSmallData(); }
+                    if (operatorMode === "on") {setYellow(!yellow) , sendSmallData(yellow ? 1: 0); }
                   }}
                   className={`w-4 h-4 rounded-full cursor-pointer
                     ${yellow
@@ -254,7 +254,7 @@ export default function PuuPage() {
 
               <div
                 onClick={() => {
-                  if (operatorMode === "on") {setRed(!red), sendSmallData();}
+                  if (operatorMode === "on") {setRed(!red), sendSmallData(red ? 1: 0);}
                 }}
                 className={`w-4 h-4 rounded-full cursor-pointer
                   ${red
