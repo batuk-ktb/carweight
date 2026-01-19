@@ -188,7 +188,7 @@ export default function PuuPage() {
   async function sendSmallData(value: any) {
   try {
     const payload = {
-    "reg_addr": 12,
+    "reg_addr": 11,
     "reg_value": value
   }
 
@@ -229,7 +229,7 @@ export default function PuuPage() {
                 onClick={() => {
                   if (operatorMode === "on") {
                     setGreen(!green)
-                    sendSmallData(green ? 1: 0); 
+                    sendSmallData(!green ? 1: 0); 
                     }
                 }}
                 className={`w-4 h-4 rounded-full cursor-pointer
@@ -242,7 +242,7 @@ export default function PuuPage() {
 
               <div
                   onClick={() => {
-                    if (operatorMode === "on") {setYellow(!yellow) , sendSmallData(yellow ? 1: 0); }
+                    if (operatorMode === "on") {setYellow(!yellow) , sendSmallData(!yellow ? 1: 0); }
                   }}
                   className={`w-4 h-4 rounded-full cursor-pointer
                     ${yellow
@@ -254,7 +254,7 @@ export default function PuuPage() {
 
               <div
                 onClick={() => {
-                  if (operatorMode === "on") {setRed(!red), sendSmallData(red ? 1: 0);}
+                  if (operatorMode === "on") {setRed(!red), sendSmallData(!red ? 1: 0);}
                 }}
                 className={`w-4 h-4 rounded-full cursor-pointer
                   ${red
