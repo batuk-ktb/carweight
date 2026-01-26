@@ -12,6 +12,17 @@ import axios from "axios";
 import { url } from "inspector";
 import { send } from "process";
 
+import Header from '@/components/dashboard/Header';
+import ControlPanel from '@/components/dashboard/ControlPanel';
+import WeightDisplay from '@/components/dashboard/WeightDisplay';
+import StatsPanel from '@/components/dashboard/StatsPanel';
+import CameraView from '@/components/dashboard/CameraView';
+import TransactionTable, { Transaction } from '@/components/dashboard/TransactionTable';
+import TruckVisualization from '@/components/dashboard/TruckVisualization';
+import NewTruckModal, { TruckFormData } from '@/components/dashboard/NewTruckModal';
+import SaveSuccessModal from '@/components/dashboard/SaveSuccessModal';
+
+
 export type OperatorStatus = "on" | "off";
 
 type CameraGroup = {
@@ -102,7 +113,119 @@ export default function PuuPage() {
 
   // Read as 32-bit float
   return view.getFloat32(0, false);
-}
+  }
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [showNewTruckModal, setShowNewTruckModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [lastSavedTransaction, setLastSavedTransaction] = useState<{ id: string; netWeight: number } | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Current weighing session
+  const [currentWeight, setCurrentWeight] = useState(44852);
+  const [currentTruck, setCurrentTruck] = useState({
+    plateNumber: '1234 УБХ',
+    material: 'Coal',
+    containerId1: '2565480',
+    containerId2: '2565480',
+    tareWeight: 15200
+  });
+  const [cameraSnapshots, setCameraSnapshots] = useState<{ c3: string | null; c4: string | null }>({
+    c3: null,
+    c4: null
+  });
+
+  const today = new Date().toISOString().slice(0, 10);
+  const todayTransactions = transactions.filter(t => t.timestamp.startsWith(today));
+  const totalNetWeight = todayTransactions.reduce((sum, t) => sum + t.netWeight, 0) / 1000;
+  const averageLoad = todayTransactions.length > 0 ? totalNetWeight / todayTransactions.length : 0;
+
+  // Pagination
+  const itemsPerPage = 5;
+  const totalPages = Math.max(1, Math.ceil(transactions.length / itemsPerPage));
+  const paginatedTransactions = transactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleNewTruck = () => {
+    setShowNewTruckModal(true);
+  };
+
+  const handleNewTruckSubmit = (data: TruckFormData) => {
+    setCurrentTruck({
+      plateNumber: data.plateNumber,
+      material: data.material,
+      containerId1: data.containerId1 || '0000000',
+      containerId2: data.containerId2 || '0000000',
+      tareWeight: data.tareWeight
+    });
+    setCurrentWeight(15200);
+    setCameraSnapshots({ c3: null, c4: null });
+    setShowNewTruckModal(false);
+  };
+
+  const handleCaptureCamera = () => {
+    setIsCapturing(true);
+    setTimeout(() => {
+      setCameraSnapshots({
+        c3: 'captured',
+        c4: 'captured'
+      });
+      setIsCapturing(false);
+    }, 1500);
+  };
+
+  const handleSaveTransaction = async () => {
+    setIsSaving(true);
+    
+    try {
+      const netWeight = currentWeight - currentTruck.tareWeight;
+      const containerWeight = Math.floor(netWeight / 4);
+      
+      const newTransaction: Transaction = {
+        id:'1',
+        plateNumber: currentTruck.plateNumber,
+        material: currentTruck.material,
+        grossWeight: currentWeight,
+        tareWeight: currentTruck.tareWeight,
+        netWeight: netWeight,
+        containerWeights: {
+          c1: containerWeight + 1,
+          c2: containerWeight + 20,
+          c3: containerWeight + 60,
+          c4: containerWeight + 100
+        },
+        timestamp: new Date().toISOString().slice(0, 16).replace('T', ' ')
+      };
+      
+      // Save to database
+      // const savedTx = await saveTransaction(
+      //   newTransaction,
+      //   'admin',
+      //   currentTruck.containerId1,
+      //   currentTruck.containerId2
+      // );
+      
+      // Update local state (real-time subscription will also update, but this is faster)
+      // setTransactions(prev => {
+      //   if (prev.some(t => t.id === savedTx.id)) return prev;
+      //   return [savedTx, ...prev];
+      // });
+      
+      // setLastSavedTransaction({ id: savedTx.id, netWeight: savedTx.netWeight });
+      setShowSuccessModal(true);
+    } catch (error) {
+      console.error('Failed to save transaction:', error);
+      alert('Failed to save transaction. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
  useEffect(() => {
   if (!id) return;
@@ -303,6 +426,131 @@ export default function PuuPage() {
         </div>
         <Trailer data={{ cam1: data?.cam7, cam2: data?.cam8 }} />
       </div>
+
+<div className="min-h-screen bg-[#0d1117]">
+      <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      
+      <div className="flex">
+        {/* Sidebar - Control Panel */}
+        <aside className={`
+          fixed lg:static inset-y-0 left-0 z-40 w-64 bg-[#0d1117] transform transition-transform duration-300
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          lg:block pt-4 px-4 border-r border-gray-800
+        `}>
+          <ControlPanel
+            onNewTruck={handleNewTruck}
+            onCaptureCamera={handleCaptureCamera}
+            onSaveTransaction={handleSaveTransaction}
+            isCapturing={isCapturing}
+            isSaving={isSaving}
+          />
+          
+          <div className="mt-6">
+            <StatsPanel
+              totalTransactions={todayTransactions.length}
+              totalNetWeight={totalNetWeight}
+              averageLoad={averageLoad}
+            />
+          </div>
+          
+          {/* Database sync indicator */}
+          <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <span className="text-gray-400 text-xs">Database synced</span>
+            </div>
+            <p className="text-gray-500 text-xs mt-1">{transactions.length} transactions loaded</p>
+          </div>
+        </aside>
+        
+        {/* Overlay for mobile sidebar */}
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+        
+        {/* Main Content */}
+        <main className="flex-1 p-4 lg:p-6 overflow-x-hidden">
+          {/* Weight Display & System Diagram */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+            {/* Left: Weight Display & Truck Visualization */}
+            <div className="space-y-6">
+              <div className="bg-[#1a2332] rounded-lg p-6 shadow-xl">
+                <WeightDisplay weight={currentWeight} isLive={true} />
+                
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <div className="bg-[#0d1117] rounded px-3 py-2">
+                    <span className="text-gray-400 text-sm">Plate: </span>
+                    <span className="text-white font-bold">{currentTruck.plateNumber}</span>
+                  </div>
+                  <div className="bg-[#0d1117] rounded px-3 py-2">
+                    <span className="text-gray-400 text-sm">Material: </span>
+                    <span className="text-white">{currentTruck.material}</span>
+                  </div>
+                  <div className="bg-[#0d1117] rounded px-3 py-2">
+                    <span className="text-gray-400 text-sm">Tare: </span>
+                    <span className="text-white font-mono">{currentTruck.tareWeight.toLocaleString()} kg</span>
+                  </div>
+                  <div className="bg-[#0d1117] rounded px-3 py-2">
+                    <span className="text-gray-400 text-sm">Net: </span>
+                    <span className="text-yellow-500 font-bold font-mono">
+                      {(currentWeight - currentTruck.tareWeight).toLocaleString()} kg
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <TruckVisualization 
+                containerId1={currentTruck.containerId1}
+                containerId2={currentTruck.containerId2}
+              />
+            </div>
+            
+            {/* Right: System Diagram */}
+            <div className="bg-[#1a2332] rounded-lg overflow-hidden shadow-xl">
+              zurag here but no need it
+            </div>
+          </div>
+          
+          {/* Camera Views */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <CameraView 
+              title="Container 3 - Side View" 
+              cameraId="C3-2"
+              snapshot={cameraSnapshots.c3}
+              isCapturing={isCapturing}
+            />
+            <CameraView 
+              title="Container 4 - Side View" 
+              cameraId="C4-2"
+              snapshot={cameraSnapshots.c4}
+              isCapturing={isCapturing}
+            />
+          </div>
+          
+          {/* Transaction Table */}
+          <TransactionTable
+            transactions={paginatedTransactions}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </main>
+      </div>
+      
+      {/* Modals */}
+      <NewTruckModal
+        isOpen={showNewTruckModal}
+        onClose={() => setShowNewTruckModal(false)}
+        onSubmit={handleNewTruckSubmit}
+      />
+    </div>
+      
     </div>
   );
 }
