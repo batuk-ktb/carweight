@@ -8,6 +8,7 @@ import Bracket from "@/components/puu/bracket";
 import CarHead from "@/components/puu/carHead";
 import Trailer from "@/components/puu/trailer";
 import RadioButton from "@/components/RadioButton"
+import ToggleButton from "@/components/twoWayButton";
 import axios from "axios";
 import { url } from "inspector";
 import { send } from "process";
@@ -22,8 +23,6 @@ import TruckVisualization from '@/components/dashboard/TruckVisualization';
 import NewTruckModal, { TruckFormData } from '@/components/dashboard/NewTruckModal';
 import SaveSuccessModal from '@/components/dashboard/SaveSuccessModal';
 
-
-export type OperatorStatus = "on" | "off";
 
 type CameraGroup = {
   [key: `cam${number}`]: string;
@@ -95,7 +94,9 @@ export default function PuuPage() {
   const [data, setData] = useState<any>(null);
   const [loader, setLoader] = useState(false);
 
-  const [operatorMode, setOperatorMode] = useState<OperatorStatus>("off");
+  const [operatorMode, setOperatorMode] = useState(false);
+  const [entryGate, setEntryGate] = useState(false);
+  const [exitGate, setExitGate] = useState(false);
   const [red, setRed] = useState(false)
   const [yellow, setYellow] = useState(false)
   const [green, setGreen] = useState(false)
@@ -331,93 +332,49 @@ export default function PuuPage() {
   }
 }
 
+async function controlPuuByRemote(name :string, value:any){
+  let registerAdd = 11;
+  let registerValue = value;
+  if(name = "entryGate"){
+    registerAdd = value ? 9: 10;
+    registerValue = 1
+  }
+  if(name = "exitGate"){
+    registerAdd = value ? 7: 8;
+    registerValue = 1
+  }
+  try {
+    const payload = {
+    "reg_addr": registerAdd,
+    "reg_value": registerValue
+  }
+
+    const res = await axios.post(
+      "http://127.0.0.1:30511/write/", // Django endpoint
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  if(name = "entryGate"){
+      setEntryGate(value)
+    }
+  if(name = "exitGate"){
+    setExitGate(value)
+  }
+    console.log("POST Response:", res.data);
+  } catch (err) {
+    console.error("POST Error:", err);
+  }
+}
   return (
     <div >
       <div className="w-full flex justify-center items-center">
         <h1>Puu {id}</h1>
       </div>
-      <div className="w-full flec- justify-end items-center">
-        <RadioButton value={operatorMode} onChange={setOperatorMode}
-      /> 
-      </div>
-      <div className="flex mt-4 justify-center items-center">
-        {/* ===== LEFT (LIGHT STATUS) ===== */}
-          <div className="flex flex-col gap-3 items-center">
-            <p className="text-sm text-slate-600">
-              Гэрлийн төлөв
-            </p>
-
-            <div className="flex flex-col gap-2">
-              <div
-                onClick={() => {
-                  if (operatorMode === "on") {
-                    setGreen(!green)
-                    sendSmallData(!green ? 1: 0); 
-                    }
-                }}
-                className={`w-4 h-4 rounded-full cursor-pointer
-                  ${green
-                    ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-                    : "bg-slate-300"}
-                  ${operatorMode === "off" ? "opacity-40 cursor-not-allowed" : ""}
-                `}
-              />
-
-              <div
-                  onClick={() => {
-                    if (operatorMode === "on") {setYellow(!yellow) , sendSmallData(!yellow ? 1: 0); }
-                  }}
-                  className={`w-4 h-4 rounded-full cursor-pointer
-                    ${yellow
-                      ? "bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.6)]"
-                      : "bg-slate-300"}
-                    ${operatorMode === "off" ? "opacity-40 cursor-not-allowed" : ""}
-                  `}
-                />
-
-              <div
-                onClick={() => {
-                  if (operatorMode === "on") {setRed(!red), sendSmallData(!red ? 1: 0);}
-                }}
-                className={`w-4 h-4 rounded-full cursor-pointer
-                  ${red
-                    ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-                    : "bg-slate-300"}
-                  ${operatorMode === "off" ? "opacity-40 cursor-not-allowed" : ""}
-                `}
-              />
-
-            </div>
-          </div>
-        <div className="flex flex-col justify-center items-center mt-4">
-          <div className="flex justify-between items-center mb-2 w-[50vw]">
-            {/* deed heseg 2 heseg medregchuud */}
-            <div className=" flex justify-center items-end">
-              <RDsensor status = {data?.barrier1} />
-              <Bracket />
-              <RDsensor status = {data?.barrier2} />
-            </div>
-            <div className=" flex justify-center items-end">
-              <RDsensor status = {data?.barrier3} />
-              <Bracket />
-              <RDsensor status = {data?.barrier4}/>
-            </div>
-          </div>
-          <div className="flex ">
-            {/* suuri heseg */}
-            <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105" />
-            <div className="w-[50vw] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%,100%_0)] transition-transform duration-300 hover:scale-105">
-              {int16PairToFloat(data?.allInfo[22], data?.allInfo[21])}
-              </div> 
-            <div className="w-[100px] h-[30px] bg-blue-500 [clip-path:polygon(0_0,0_100%,100%_100%)] transition-transform duration-300 hover:scale-105" />
-          </div>
-        </div>
-        <div>
-          <p>RFID: {data?.rfid}</p>
-        </div>
-      </div>
-      <div className=" flex justify-center items-center gap-1 py-4 mt-10">
-        {/* mashin bolood camera heseg */}
+      {/* <div className=" flex justify-center items-center gap-1 py-4 mt-10">
         <CarHead data={data} />
         <Trailer data={{ cam1: data?.cam1, cam2: data?.cam2 }} />
         <div className="flex gap-2">
@@ -425,131 +382,168 @@ export default function PuuPage() {
           <Trailer data={{ cam1: data?.cam5, cam2: data?.cam6 }} />
         </div>
         <Trailer data={{ cam1: data?.cam7, cam2: data?.cam8 }} />
-      </div>
+      </div> */}
 
-<div className="min-h-screen bg-[#0d1117]">
-      <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-      
-      <div className="flex">
-        {/* Sidebar - Control Panel */}
-        <aside className={`
-          fixed lg:static inset-y-0 left-0 z-40 w-64 bg-[#0d1117] transform transition-transform duration-300
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          lg:block pt-4 px-4 border-r border-gray-800
-        `}>
-          <ControlPanel
-            onNewTruck={handleNewTruck}
-            onCaptureCamera={handleCaptureCamera}
-            onSaveTransaction={handleSaveTransaction}
-            isCapturing={isCapturing}
-            isSaving={isSaving}
-          />
-          
-          <div className="mt-6">
-            <StatsPanel
-              totalTransactions={todayTransactions.length}
-              totalNetWeight={totalNetWeight}
-              averageLoad={averageLoad}
-            />
-          </div>
-          
-          {/* Database sync indicator */}
-          <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span className="text-gray-400 text-xs">Database synced</span>
-            </div>
-            <p className="text-gray-500 text-xs mt-1">{transactions.length} transactions loaded</p>
-          </div>
-        </aside>
+      <div className="min-h-screen bg-[#0d1117]">
         
-        {/* Overlay for mobile sidebar */}
-        {sidebarOpen && (
-          <div 
-            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-        
-        {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-x-hidden">
-          {/* Weight Display & System Diagram */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-            {/* Left: Weight Display & Truck Visualization */}
-            <div className="space-y-6">
-              <div className="bg-[#1a2332] rounded-lg p-6 shadow-xl">
-                <WeightDisplay weight={currentWeight} isLive={true} />
-                
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <div className="bg-[#0d1117] rounded px-3 py-2">
-                    <span className="text-gray-400 text-sm">Plate: </span>
-                    <span className="text-white font-bold">{currentTruck.plateNumber}</span>
+        <div className="flex">
+          {/* Main Content */}
+          <main className="flex-1 p-4 lg:p-6 overflow-x-hidden">
+            {/* Weight Display & System Diagram */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+              {/* Left: System Diagram */}
+              <div className="bg-[#1a2332] rounded-lg overflow-hidden shadow-xl flex gap-2">
+                <ControlPanel
+                    onNewTruck={handleNewTruck}
+                    onCaptureCamera={handleCaptureCamera}
+                    onSaveTransaction={handleSaveTransaction}
+                    isCapturing={isCapturing}
+                    isSaving={isSaving}
+                  />
+                  
+                  <div className="mt-6">
+                    <StatsPanel
+                      totalTransactions={todayTransactions.length}
+                      totalNetWeight={totalNetWeight}
+                      averageLoad={averageLoad}
+                    />
                   </div>
-                  <div className="bg-[#0d1117] rounded px-3 py-2">
-                    <span className="text-gray-400 text-sm">Material: </span>
-                    <span className="text-white">{currentTruck.material}</span>
+                  
+                  {/* Database sync indicator */}
+                  <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg text-white">
+                    <p>Оператор төлөв</p>
+                    <ToggleButton onText = "On" offText="Off" value = {operatorMode} onToggle = {()=> setOperatorMode(!operatorMode)}/>
+                    {/* ===== LEFT (LIGHT STATUS) ===== */}
+                    <div className="flex flex-col gap-3 items-center">
+                      <p className="text-sm text-slate-600">
+                        Гэрлийн төлөв
+                      </p>
+
+                      <div className="flex flex-col gap-2">
+                        <div
+                          onClick={() => {
+                            if (operatorMode) {
+                              setGreen(!green)
+                              sendSmallData(!green ? 1: 0); 
+                              }
+                          }}
+                          className={`w-4 h-4 rounded-full cursor-pointer
+                            ${green
+                              ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+                              : "bg-slate-300"}
+                            ${!operatorMode ? "opacity-40 cursor-not-allowed" : ""}
+                          `}
+                        />
+
+                        <div
+                            onClick={() => {
+                              if (operatorMode) {setYellow(!yellow) , sendSmallData(!yellow ? 1: 0); }
+                            }}
+                            className={`w-4 h-4 rounded-full cursor-pointer
+                              ${yellow
+                                ? "bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.6)]"
+                                : "bg-slate-300"}
+                              ${!operatorMode ? "opacity-40 cursor-not-allowed" : ""}
+                            `}
+                          />
+
+                        <div
+                          onClick={() => {
+                            if (operatorMode) {setRed(!red), sendSmallData(!red ? 1: 0);}
+                          }}
+                          className={`w-4 h-4 rounded-full cursor-pointer
+                            ${red
+                              ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+                              : "bg-slate-300"}
+                            ${!operatorMode ? "opacity-40 cursor-not-allowed" : ""}
+                          `}
+                        />
+
+                      </div>
+                    </div>
                   </div>
-                  <div className="bg-[#0d1117] rounded px-3 py-2">
-                    <span className="text-gray-400 text-sm">Tare: </span>
-                    <span className="text-white font-mono">{currentTruck.tareWeight.toLocaleString()} kg</span>
+                  <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg text-white">
+                    
+                    <div className="flex flex-col gap-2">
+                      <p>Орох хаал</p>
+                    <ToggleButton onText = "Нээх" offText="Хаах" value = {entryGate} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                    <p>Гарах хаалт</p>                   
+                    <ToggleButton onText = "Нээх" offText="Хаах" value = {exitGate} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
+                    </div>
                   </div>
-                  <div className="bg-[#0d1117] rounded px-3 py-2">
-                    <span className="text-gray-400 text-sm">Net: </span>
-                    <span className="text-yellow-500 font-bold font-mono">
-                      {(currentWeight - currentTruck.tareWeight).toLocaleString()} kg
-                    </span>
+              </div>
+              {/* Right: Weight Display & Truck Visualization */}
+              <div className="space-y-6">
+                <div className="bg-[#1a2332] rounded-lg p-6 shadow-xl">
+                  <WeightDisplay weight={int16PairToFloat(data?.allInfo[22], data?.allInfo[21])} isLive={true} />
+                  
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <div className="bg-[#0d1117] rounded px-3 py-2">
+                      <span className="text-gray-400 text-sm">Plate: </span>
+                      <span className="text-white font-bold">{currentTruck.plateNumber}</span>
+                    </div>
+                    <div className="bg-[#0d1117] rounded px-3 py-2">
+                      <span className="text-gray-400 text-sm">Material: </span>
+                      <span className="text-white">{currentTruck.material}</span>
+                    </div>
+                    <div className="bg-[#0d1117] rounded px-3 py-2">
+                      <span className="text-gray-400 text-sm">Tare: </span>
+                      <span className="text-white font-mono">{currentTruck.tareWeight.toLocaleString()} kg</span>
+                    </div>
+                    <div className="bg-[#0d1117] rounded px-3 py-2">
+                      <span className="text-gray-400 text-sm">Net: </span>
+                      <span className="text-yellow-500 font-bold font-mono">
+                        {(currentWeight - currentTruck.tareWeight).toLocaleString()} kg
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
               
+              
+            </div>
+            
+            <div>
               <TruckVisualization 
-                containerId1={currentTruck.containerId1}
-                containerId2={currentTruck.containerId2}
+                  containerId1={currentTruck.containerId1}
+                  containerId2={currentTruck.containerId2}
+                />
+            </div>
+            {/* Camera Views */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <CameraView 
+                title="Container 3 - Side View" 
+                cameraId="C3-2"
+                snapshot={cameraSnapshots.c3}
+                isCapturing={isCapturing}
+              />
+              <CameraView 
+                title="Container 4 - Side View" 
+                cameraId="C4-2"
+                snapshot={cameraSnapshots.c4}
+                isCapturing={isCapturing}
               />
             </div>
             
-            {/* Right: System Diagram */}
-            <div className="bg-[#1a2332] rounded-lg overflow-hidden shadow-xl">
-              zurag here but no need it
-            </div>
-          </div>
-          
-          {/* Camera Views */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <CameraView 
-              title="Container 3 - Side View" 
-              cameraId="C3-2"
-              snapshot={cameraSnapshots.c3}
-              isCapturing={isCapturing}
+            {/* Transaction Table */}
+            <TransactionTable
+              transactions={paginatedTransactions}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
             />
-            <CameraView 
-              title="Container 4 - Side View" 
-              cameraId="C4-2"
-              snapshot={cameraSnapshots.c4}
-              isCapturing={isCapturing}
-            />
-          </div>
-          
-          {/* Transaction Table */}
-          <TransactionTable
-            transactions={paginatedTransactions}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </main>
+          </main>
+        </div>
+        
+        {/* Modals */}
+        <NewTruckModal
+          isOpen={showNewTruckModal}
+          onClose={() => setShowNewTruckModal(false)}
+          onSubmit={handleNewTruckSubmit}
+        />
       </div>
-      
-      {/* Modals */}
-      <NewTruckModal
-        isOpen={showNewTruckModal}
-        onClose={() => setShowNewTruckModal(false)}
-        onSubmit={handleNewTruckSubmit}
-      />
-    </div>
       
     </div>
   );
