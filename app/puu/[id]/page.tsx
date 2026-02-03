@@ -400,6 +400,95 @@ async function controlPuuByRemote(name :string, value:any){
                     isCapturing={isCapturing}
                     isSaving={isSaving}
                   />
+                                    
+                  {/* Database sync indicator */}
+                  <div className="mt-4 px-4 py-4">
+
+                    {/* Header */}
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="text-sm font-semibold tracking-wide text-slate-300">
+                        Оператор төлөв
+                      </p>
+
+                      <ToggleButton
+                        onText="ON"
+                        offText="OFF"
+                        value={operatorMode}
+                        onToggle={() => setOperatorMode(!operatorMode)}
+                      />
+                    </div>
+
+                    {/* Light Status */}
+                    <div className="flex flex-col items-center gap-3 mt-2">
+                      <p className="text-xs uppercase tracking-wider text-slate-500">
+                        Гэрлийн төлөв
+                      </p>
+
+                      <div className="flex gap-4">
+
+                        {/* GREEN */}
+                        <div
+                          onClick={() => {
+                            if (operatorMode) {
+                              setGreen(!green)
+                              sendSmallData(!green ? 1 : 0)
+                            }
+                          }}
+                          className={`w-5 h-5 rounded-full transition-all duration-200
+                          ${green 
+                            ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)] scale-110"
+                            : "bg-slate-500/50"}
+                          ${!operatorMode ? "opacity-40 cursor-not-allowed" : "cursor-pointer hover:scale-110"}
+                          `}
+                        />
+
+                        {/* YELLOW */}
+                        <div
+                          onClick={() => {
+                            if (operatorMode) {
+                              setYellow(!yellow)
+                              sendSmallData(!yellow ? 1 : 0)
+                            }
+                          }}
+                          className={`w-5 h-5 rounded-full transition-all duration-200
+                          ${yellow 
+                            ? "bg-orange-400 shadow-[0_0_12px_rgba(251,146,60,0.9)] scale-110"
+                            : "bg-slate-500/50"}
+                          ${!operatorMode ? "opacity-40 cursor-not-allowed" : "cursor-pointer hover:scale-110"}
+                          `}
+                        />
+
+                        {/* RED */}
+                        <div
+                          onClick={() => {
+                            if (operatorMode) {
+                              setRed(!red)
+                              sendSmallData(!red ? 1 : 0)
+                            }
+                          }}
+                          className={`w-5 h-5 rounded-full transition-all duration-200
+                          ${red 
+                            ? "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.9)] scale-110"
+                            : "bg-slate-500/50"}
+                          ${!operatorMode ? "opacity-40 cursor-not-allowed" : "cursor-pointer hover:scale-110"}
+                          `}
+                        />
+
+                      </div>
+                    </div>
+                    <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg text-white grid grid-cols-2 gap-2">
+            
+                      <div className="flex flex-col gap-2">
+                        <p>Орох хаал</p>
+                      <ToggleButton onText = "Нээх" offText="Хаах" value = {entryGate} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                      <p>Гарах хаалт</p>                   
+                      <ToggleButton onText = "Нээх" offText="Хаах" value = {exitGate} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
+                      </div>
+                    </div>
+                  </div>
+
                   
                   <div className="mt-6">
                     <StatsPanel
@@ -407,71 +496,6 @@ async function controlPuuByRemote(name :string, value:any){
                       totalNetWeight={totalNetWeight}
                       averageLoad={averageLoad}
                     />
-                  </div>
-                  
-                  {/* Database sync indicator */}
-                  <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg text-white">
-                    <p>Оператор төлөв</p>
-                    <ToggleButton onText = "On" offText="Off" value = {operatorMode} onToggle = {()=> setOperatorMode(!operatorMode)}/>
-                    {/* ===== LEFT (LIGHT STATUS) ===== */}
-                    <div className="flex flex-col gap-3 items-center">
-                      <p className="text-sm text-slate-600">
-                        Гэрлийн төлөв
-                      </p>
-
-                      <div className="flex flex-col gap-2">
-                        <div
-                          onClick={() => {
-                            if (operatorMode) {
-                              setGreen(!green)
-                              sendSmallData(!green ? 1: 0); 
-                              }
-                          }}
-                          className={`w-4 h-4 rounded-full cursor-pointer
-                            ${green
-                              ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-                              : "bg-slate-300"}
-                            ${!operatorMode ? "opacity-40 cursor-not-allowed" : ""}
-                          `}
-                        />
-
-                        <div
-                            onClick={() => {
-                              if (operatorMode) {setYellow(!yellow) , sendSmallData(!yellow ? 1: 0); }
-                            }}
-                            className={`w-4 h-4 rounded-full cursor-pointer
-                              ${yellow
-                                ? "bg-orange-400 shadow-[0_0_6px_rgba(251,146,60,0.6)]"
-                                : "bg-slate-300"}
-                              ${!operatorMode ? "opacity-40 cursor-not-allowed" : ""}
-                            `}
-                          />
-
-                        <div
-                          onClick={() => {
-                            if (operatorMode) {setRed(!red), sendSmallData(!red ? 1: 0);}
-                          }}
-                          className={`w-4 h-4 rounded-full cursor-pointer
-                            ${red
-                              ? "bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-                              : "bg-slate-300"}
-                            ${!operatorMode ? "opacity-40 cursor-not-allowed" : ""}
-                          `}
-                        />
-
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg text-white">
-                    
-                    <div className="flex flex-col gap-2">
-                      <p>Орох хаал</p>
-                    <ToggleButton onText = "Нээх" offText="Хаах" value = {entryGate} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                    <p>Гарах хаалт</p>                   
-                    <ToggleButton onText = "Нээх" offText="Хаах" value = {exitGate} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
-                    </div>
                   </div>
               </div>
               {/* Right: Weight Display & Truck Visualization */}
