@@ -414,6 +414,7 @@ async function controlPuuByRemote(name :string, value:any){
                         onText="ON"
                         offText="OFF"
                         value={operatorMode}
+                        disabled={false}
                         onToggle={() => setOperatorMode(!operatorMode)}
                       />
                     </div>
@@ -480,11 +481,11 @@ async function controlPuuByRemote(name :string, value:any){
             
                       <div className="flex flex-col gap-2">
                         <p>Орох хаал</p>
-                      <ToggleButton onText = "Нээх" offText="Хаах" value = {entryGate} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
+                      <ToggleButton onText = "Нээх" offText="Хаах" value = {entryGate} disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
                       </div>
                       <div className="flex flex-col gap-2">
                       <p>Гарах хаалт</p>                   
-                      <ToggleButton onText = "Нээх" offText="Хаах" value = {exitGate} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
+                      <ToggleButton onText = "Нээх" offText="Хаах" value = {exitGate}  disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
                       </div>
                     </div>
                   </div>
