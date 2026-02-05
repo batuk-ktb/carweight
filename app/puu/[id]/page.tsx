@@ -285,6 +285,7 @@ export default function PuuPage() {
       setRed(allInfo?.data[7] === 1 )
       setYellow(allInfo?.data[6] === 1)
       setGreen(allInfo?.data[5] === 1)
+      setOperatorMode(allInfo?.data[11] === 1)
     } catch (error) {
       console.error("PUU API error:", error);
       // Error гарвал хоосон эсвэл default data
@@ -487,7 +488,7 @@ async function controlPuuByRemote(name :string, value:any){
                     <div className="mt-4 px-3 py-2 bg-[#1a2332] rounded-lg text-white grid grid-cols-2 gap-2">
             
                       <div className="flex flex-col gap-2">
-                        <p>Орох хаал</p>
+                        <p>Орох хаалт</p>
                       <ToggleButton onText = "Нээх" offText="Хаах" value = {entryGate} disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
                       </div>
                       <div className="flex flex-col gap-2">
