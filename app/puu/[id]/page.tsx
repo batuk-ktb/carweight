@@ -525,9 +525,22 @@ async function controlPuuByRemote(name :string, value:any){
             
                       <div className="flex flex-col gap-2">
                         <p>Орох хаалт</p>
-                        <div className="grid grid-cols-1 gap-2">
+                        
+                      <ToggleButton onText = "Хаах" offText="Нээх" value = {entryGate} disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                      <p>Гарах хаалт</p>      
+                                  
+                      <ToggleButton onText = "Хаах" offText="Нээх" value = {exitGate}  disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                  <div className="mt-6">
+                    <div className="grid grid-cols-1 gap-2">
                           <div className=" flex flex-col gap-2">
-                            <p>senser-1</p>
+                            <p>sensor-1</p>
                             <div
                                 className={`w-5 h-5 rounded-full transition-all duration-200
                                 ${data?.allInfo[0] == 1
@@ -537,7 +550,7 @@ async function controlPuuByRemote(name :string, value:any){
                               />
                           </div>
                           <div className=" flex flex-col gap-2">
-                            <p>senser-2</p>
+                            <p>sensor-2</p>
                             <div
                                 className={`w-5 h-5 rounded-full transition-all duration-200
                                 ${data?.allInfo[1] == 1
@@ -546,14 +559,10 @@ async function controlPuuByRemote(name :string, value:any){
                                 `}
                               />
                           </div>
-                        </div>
-                      <ToggleButton onText = "Хаах" offText="Нээх" value = {entryGate} disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                      <p>Гарах хаалт</p>      
-                      <div className="grid grid-cols-1 gap-2">
+                    </div>
+                    <div className="grid grid-cols-1 gap-2">
                           <div className=" flex flex-col gap-2">
-                            <p>senser-3</p>
+                            <p>sensor-3</p>
                             <div
                                 className={`w-5 h-5 rounded-full transition-all duration-200
                                 ${data?.allInfo[2] == 1
@@ -563,7 +572,7 @@ async function controlPuuByRemote(name :string, value:any){
                               />
                           </div>
                           <div className=" flex flex-col gap-2">
-                            <p>senser-4</p>
+                            <p>sensor-4</p>
                             <div
                                 className={`w-5 h-5 rounded-full transition-all duration-200
                                 ${data?.allInfo[3] == 1
@@ -572,19 +581,12 @@ async function controlPuuByRemote(name :string, value:any){
                                 `}
                               />
                           </div>
-                        </div>             
-                      <ToggleButton onText = "Хаах" offText="Нээх" value = {exitGate}  disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
-                      </div>
-                    </div>
-                  </div>
-
-                  
-                  <div className="mt-6">
-                    <StatsPanel
+                        </div> 
+                    {/* <StatsPanel
                       totalTransactions={todayTransactions.length}
                       totalNetWeight={totalNetWeight}
                       averageLoad={averageLoad}
-                    />
+                    /> */}
                   </div>
               </div>
               {/* Right: Weight Display & Truck Visualization */}
