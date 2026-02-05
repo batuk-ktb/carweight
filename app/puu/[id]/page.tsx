@@ -415,8 +415,8 @@ async function controlPuuByRemote(name :string, value:any){
     console.error("POST Error:", err);
   }
 }
-console.log(data.allInfo)
-console.log('0000------------', data.allInfo[21], data.allInfo[20])
+console.log(data?.allInfo)
+console.log('0000------------', data?.allInfo[21], data?.allInfo[20])
   return (
     <div >
       <div className="w-full flex justify-center items-center">
