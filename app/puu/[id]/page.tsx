@@ -538,7 +538,7 @@ async function controlPuuByRemote(name :string, value:any){
 
                   
                   <div className="mt-6">
-                    <div className="bg-[#1a2332] rounded-lg p-4 shadow-xl">
+                    <div className="bg-[#1a2332] rounded-lg p-4 shadow-xl text-white">
                       <div className="grid grid-cols-2 gap-2">
                             <div className=" flex flex-col gap-2">
                               <p>sensor-1</p>
