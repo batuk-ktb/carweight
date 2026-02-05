@@ -567,7 +567,7 @@ async function controlPuuByRemote(name :string, value:any){
               {/* Right: Weight Display & Truck Visualization */}
               <div className="space-y-6">
                 <div className="bg-[#1a2332] rounded-lg p-6 shadow-xl">
-                  <WeightDisplay weight={int16PairToFloat(data?.allInfo[22], data?.allInfo[21])} isLive={true} />
+                  <WeightDisplay weight={int16PairToFloat(parseInt(data?.allInfo[22]), parseInt(data?.allInfo[21]))} isLive={true} />
                   
                   <div className="mt-4 flex flex-wrap gap-3">
                     <div className="bg-[#0d1117] rounded px-3 py-2">
