@@ -357,11 +357,11 @@ async function controlPuuByRemote(name :string, value:any){
     registerValue = value ? 1 : 0
   }
   if(name == "entryGate"){
-    registerAdd = baseAdd +  value ? 9: 10;
+    registerAdd =  value ? baseAdd + 9 : baseAdd + 10;
     registerValue = 1
   }
   if(name == "exitGate"){
-    registerAdd = baseAdd +  value ? 7: 8;
+    registerAdd = value ? baseAdd + 7: baseAdd + 8;
     registerValue = 1
   }
   try {
