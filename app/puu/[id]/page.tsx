@@ -334,18 +334,34 @@ export default function PuuPage() {
 }
 
 async function controlPuuByRemote(name :string, value:any){
+  const baseAdd = (parseInt(id.toString())-1) * 30
   let registerAdd = 11;
   let registerValue = value;
+  if(name == "green"){
+    registerAdd = baseAdd + 4
+    registerValue = value ? 1 : 0
+  }
+
+  if(name == "yellow"){
+    registerAdd = baseAdd + 5
+    registerValue = value ? 1 : 0
+  }
+
+  if(name == "red"){
+    registerAdd = baseAdd + 6
+    registerValue = value ? 1 : 0
+  }
+
   if(name == "operator"){
-    registerAdd = 11
+    registerAdd = baseAdd + 11
     registerValue = value ? 1 : 0
   }
   if(name == "entryGate"){
-    registerAdd = value ? 9: 10;
+    registerAdd = baseAdd +  value ? 9: 10;
     registerValue = 1
   }
   if(name == "exitGate"){
-    registerAdd = value ? 7: 8;
+    registerAdd = baseAdd +  value ? 7: 8;
     registerValue = 1
   }
   try {
@@ -371,6 +387,17 @@ async function controlPuuByRemote(name :string, value:any){
   }
   if(name = "operator"){
     setOperatorMode(value)
+  }
+  if(name == "green"){
+    setGreen(value)
+  }
+
+  if(name == "yellow"){
+    setYellow(value)
+  }
+
+  if(name == "red"){
+    setRed(value)
   }
     console.log("POST Response:", res.data);
   } catch (err) {
@@ -439,8 +466,7 @@ async function controlPuuByRemote(name :string, value:any){
                         <div
                           onClick={() => {
                             if (operatorMode) {
-                              setGreen(!green)
-                              sendSmallData(!green ? 1 : 0)
+                              controlPuuByRemote("green",!green)
                             }
                           }}
                           className={`w-5 h-5 rounded-full transition-all duration-200
@@ -455,8 +481,7 @@ async function controlPuuByRemote(name :string, value:any){
                         <div
                           onClick={() => {
                             if (operatorMode) {
-                              setYellow(!yellow)
-                              sendSmallData(!yellow ? 1 : 0)
+                              controlPuuByRemote("yellow",!yellow)
                             }
                           }}
                           className={`w-5 h-5 rounded-full transition-all duration-200
@@ -471,8 +496,7 @@ async function controlPuuByRemote(name :string, value:any){
                         <div
                           onClick={() => {
                             if (operatorMode) {
-                              setRed(!red)
-                              sendSmallData(!red ? 1 : 0)
+                              controlPuuByRemote("red",!red)
                             }
                           }}
                           className={`w-5 h-5 rounded-full transition-all duration-200
