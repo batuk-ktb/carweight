@@ -335,6 +335,10 @@ export default function PuuPage() {
 async function controlPuuByRemote(name :string, value:any){
   let registerAdd = 11;
   let registerValue = value;
+  if(name = "operatore"){
+    registerAdd = 11
+    registerValue = value ? 1 : 0
+  }
   if(name = "entryGate"){
     registerAdd = value ? 9: 10;
     registerValue = 1
@@ -363,6 +367,9 @@ async function controlPuuByRemote(name :string, value:any){
     }
   if(name = "exitGate"){
     setExitGate(value)
+  }
+  if(name = "operator"){
+    setOperatorMode(value)
   }
     console.log("POST Response:", res.data);
   } catch (err) {
@@ -415,7 +422,7 @@ async function controlPuuByRemote(name :string, value:any){
                         offText="OFF"
                         value={operatorMode}
                         disabled={false}
-                        onToggle={() => setOperatorMode(!operatorMode)}
+                        onToggle={() => controlPuuByRemote("operator",!operatorMode)}
                       />
                     </div>
 
