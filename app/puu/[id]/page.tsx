@@ -379,26 +379,29 @@ async function controlPuuByRemote(name :string, value:any){
         },
       }
     );
-  if(name = "entryGate"){
+    if(res){
+      if(name == "entryGate"){
       setEntryGate(value)
+      }
+      if(name == "exitGate"){
+        setExitGate(value)
+      }
+      if(name == "operator"){
+        setOperatorMode(value)
+      }
+      if(name == "green"){
+        setGreen(value)
+      }
+
+      if(name == "yellow"){
+        setYellow(value)
+      }
+
+      if(name == "red"){
+        setRed(value)
+      }
     }
-  if(name = "exitGate"){
-    setExitGate(value)
-  }
-  if(name = "operator"){
-    setOperatorMode(value)
-  }
-  if(name == "green"){
-    setGreen(value)
-  }
-
-  if(name == "yellow"){
-    setYellow(value)
-  }
-
-  if(name == "red"){
-    setRed(value)
-  }
+  
     console.log("POST Response:", res.data);
   } catch (err) {
     console.error("POST Error:", err);
