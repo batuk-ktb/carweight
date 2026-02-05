@@ -336,15 +336,15 @@ export default function PuuPage() {
 async function controlPuuByRemote(name :string, value:any){
   let registerAdd = 11;
   let registerValue = value;
-  if(name = "operatore"){
+  if(name == "operator"){
     registerAdd = 11
     registerValue = value ? 1 : 0
   }
-  if(name = "entryGate"){
+  if(name == "entryGate"){
     registerAdd = value ? 9: 10;
     registerValue = 1
   }
-  if(name = "exitGate"){
+  if(name == "exitGate"){
     registerAdd = value ? 7: 8;
     registerValue = 1
   }
