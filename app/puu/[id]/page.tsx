@@ -312,28 +312,6 @@ export default function PuuPage() {
     </div >
   }
 
-  async function sendSmallData(value: any) {
-  try {
-    const payload = {
-    "reg_addr": 11,
-    "reg_value": value
-  }
-
-    const res = await axios.post(
-      "http://127.0.0.1:30511/write/", // Django endpoint
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log("POST Response:", res.data);
-  } catch (err) {
-    console.error("POST Error:", err);
-  }
-}
 
 async function controlPuuByRemote(name :string, value:any){
   const baseAdd = (parseInt(id.toString())-1) * 30
@@ -437,6 +415,8 @@ async function controlPuuByRemote(name :string, value:any){
     console.error("POST Error:", err);
   }
 }
+console.log(data.allInfo)
+console.log('0000------------', data.allInfo[21], data.allInfo[20])
   return (
     <div >
       <div className="w-full flex justify-center items-center">
@@ -567,7 +547,7 @@ async function controlPuuByRemote(name :string, value:any){
               {/* Right: Weight Display & Truck Visualization */}
               <div className="space-y-6">
                 <div className="bg-[#1a2332] rounded-lg p-6 shadow-xl">
-                  <WeightDisplay weight={int16PairToFloat(parseInt(data?.allInfo[22]), parseInt(data?.allInfo[21]))} isLive={true} />
+                  <WeightDisplay weight={int16PairToFloat(parseInt(data?.allInfo[21]), parseInt(data?.allInfo[20]))} isLive={true} />
                   
                   <div className="mt-4 flex flex-wrap gap-3">
                     <div className="bg-[#0d1117] rounded px-3 py-2">
