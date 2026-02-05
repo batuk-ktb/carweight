@@ -546,11 +546,11 @@ async function controlPuuByRemote(name :string, value:any){
             
                       <div className="flex flex-col gap-2">
                         <p>Орох хаалт</p>
-                      <ToggleButton onText = "Нээх" offText="Хаах" value = {entryGate} disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
+                      <ToggleButton onText = "Хаах" offText="Нээх" value = {entryGate} disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
                       </div>
                       <div className="flex flex-col gap-2">
                       <p>Гарах хаалт</p>                   
-                      <ToggleButton onText = "Нээх" offText="Хаах" value = {exitGate}  disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
+                      <ToggleButton onText = "Хаах" offText="Нээх" value = {exitGate}  disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
                       </div>
                     </div>
                   </div>
