@@ -251,18 +251,18 @@ export default function PuuPage() {
         // cam7Res,
         // cam8Res,
       ] = await Promise.all([
-        axios.get(`http://127.0.0.1:30511/read/3/${(parseInt(id.toString())-1) * 30}/30`),
+        axios.get(`http://172.16.92.2:30511/read/3/${(parseInt(id.toString())-1) * 30}/30`),
         // axios.get(`/api/puu/${id}/rfid`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
       ]);
 
       // Data-г default утгатай болгох
@@ -331,7 +331,7 @@ async function controlPuuByRemote(name :string, value:any){
         "reg_value": registerValue1
       }
       const res1 = await axios.post(
-        "http://127.0.0.1:30511/write/", // Django endpoint
+        "http://172.16.92.2:30511/write/", // Django endpoint
         payload1,
         {
           headers: {
@@ -376,7 +376,7 @@ async function controlPuuByRemote(name :string, value:any){
   }
 
     const res = await axios.post(
-      "http://127.0.0.1:30511/write/", // Django endpoint
+      "http://172.16.92.2:30511/write/", // Django endpoint
       payload,
       {
         headers: {
