@@ -81,6 +81,8 @@ const ipCameraList: Record<number, CameraGroup> = {
   },
 };
 
+const sleep = (ms:any) => new Promise(resolve => setTimeout(resolve, ms));
+
 export default function PuuPage() {
   const params = useParams();
   const rawId = params?.id;
@@ -379,6 +381,34 @@ async function controlPuuByRemote(name :string, value:any){
         },
       }
     );
+
+    if(name == "entryGate" || name == "exitGate"){
+      await sleep(3000);
+      let registerAdd1 = 1
+      let registerValue1 = 0
+      if(name == "entryGate"){
+        registerAdd1 =  value ? baseAdd + 10 : baseAdd + 9;
+        registerValue1 = 0
+      }
+      if(name == "exitGate"){
+        registerAdd1 = value ? baseAdd + 8: baseAdd + 7;
+        registerValue1 = 0
+      }
+      const payload1 = {
+        "reg_addr": registerAdd1,
+        "reg_value": registerValue1
+      }
+      const res1 = await axios.post(
+        "http://127.0.0.1:30511/write/", // Django endpoint
+        payload1,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
     if(res){
       if(name == "entryGate"){
       setEntryGate(value)
