@@ -240,27 +240,27 @@ export default function PuuPage() {
         // rfidRes,
         // lightRes,
         // lprRes,
-        cam1Res,
-        cam2Res,
-        cam3Res,
-        cam4Res,
-        cam5Res,
-        cam6Res,
-        cam7Res,
-        cam8Res,
+        // cam1Res,
+        // cam2Res,
+        // cam3Res,
+        // cam4Res,
+        // cam5Res,
+        // cam6Res,
+        // cam7Res,
+        // cam8Res,
       ] = await Promise.all([
         axios.get(`http://127.0.0.1:30511/read/3/${(parseInt(id.toString())-1) * 30}/30`),
         // axios.get(`/api/puu/${id}/rfid`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`http://127.0.0.1:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
       ]);
 
       // Data-г default утгатай болгох
@@ -273,14 +273,14 @@ export default function PuuPage() {
         barrier3:allInfo?.data[3],
         barrier4:allInfo?.data[4],
         // lpr: lprRes?.data?.lpr || null,
-        cam1: cam1Res?.data?.container || null,
-        cam2: cam2Res?.data?.container || null,
-        cam3: cam3Res?.data?.container || null,
-        cam4: cam4Res?.data?.container || null,
-        cam5: cam5Res?.data?.container || null,
-        cam6: cam6Res?.data?.container || null,
-        cam7: cam7Res?.data?.container || null,
-        cam8: cam8Res?.data?.container || null,
+        // cam1: cam1Res?.data?.container || null,
+        // cam2: cam2Res?.data?.container || null,
+        // cam3: cam3Res?.data?.container || null,
+        // cam4: cam4Res?.data?.container || null,
+        // cam5: cam5Res?.data?.container || null,
+        // cam6: cam6Res?.data?.container || null,
+        // cam7: cam7Res?.data?.container || null,
+        // cam8: cam8Res?.data?.container || null,
       });
       setRed(allInfo?.data[7] === 1 )
       setYellow(allInfo?.data[6] === 1)
@@ -295,10 +295,10 @@ export default function PuuPage() {
   };
 
   fetchAllData();
-  const interval = setInterval(fetchAllData, 5000); // 5000ms = 5 sec
+  // const interval = setInterval(fetchAllData, 5000); // 5000ms = 5 sec
 
-    // 4. component unmount болох үед clean-up хийх
-    return () => clearInterval(interval);
+  //   // 4. component unmount болох үед clean-up хийх
+  //   return () => clearInterval(interval);
 
 }, [id]);
 
