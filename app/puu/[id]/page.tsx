@@ -415,8 +415,7 @@ async function controlPuuByRemote(name :string, value:any){
     console.error("POST Error:", err);
   }
 }
-console.log(data?.allInfo)
-console.log('0000------------', data?.allInfo[21], data?.allInfo[20])
+
   return (
     <div >
       <div className="w-full flex justify-center items-center">
@@ -547,7 +546,7 @@ console.log('0000------------', data?.allInfo[21], data?.allInfo[20])
               {/* Right: Weight Display & Truck Visualization */}
               <div className="space-y-6">
                 <div className="bg-[#1a2332] rounded-lg p-6 shadow-xl">
-                  <WeightDisplay weight={int16PairToFloat(parseInt(data?.allInfo[21]), parseInt(data?.allInfo[20]))} isLive={true} />
+                  <WeightDisplay weight={10 * int16PairToFloat(parseInt(data?.allInfo[21]), parseInt(data?.allInfo[20]))} isLive={true} />
                   
                   <div className="mt-4 flex flex-wrap gap-3">
                     <div className="bg-[#0d1117] rounded px-3 py-2">
