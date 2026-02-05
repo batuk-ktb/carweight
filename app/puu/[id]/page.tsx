@@ -298,10 +298,10 @@ export default function PuuPage() {
   };
 
   fetchAllData();
-  // const interval = setInterval(fetchAllData, 5000); // 5000ms = 5 sec
+  const interval = setInterval(fetchAllData, 2000); // 5000ms = 5 sec
 
-  //   // 4. component unmount болох үед clean-up хийх
-  //   return () => clearInterval(interval);
+    // 4. component unmount болох үед clean-up хийх
+    return () => clearInterval(interval);
 
 }, [id]);
 
