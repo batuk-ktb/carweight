@@ -525,10 +525,54 @@ async function controlPuuByRemote(name :string, value:any){
             
                       <div className="flex flex-col gap-2">
                         <p>Орох хаалт</p>
+                        <div className="grid grid-cols-1 gap-2">
+                          <div className=" flex flex-col gap-2">
+                            <p>senser-1</p>
+                            <div
+                                className={`w-5 h-5 rounded-full transition-all duration-200
+                                ${data?.allInfo[0] == 1
+                                  ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)] scale-110"
+                                  : "bg-slate-500/50"}
+                                `}
+                              />
+                          </div>
+                          <div className=" flex flex-col gap-2">
+                            <p>senser-2</p>
+                            <div
+                                className={`w-5 h-5 rounded-full transition-all duration-200
+                                ${data?.allInfo[1] == 1
+                                  ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)] scale-110"
+                                  : "bg-slate-500/50"}
+                                `}
+                              />
+                          </div>
+                        </div>
                       <ToggleButton onText = "Хаах" offText="Нээх" value = {entryGate} disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("entryGate",!entryGate)}/>
                       </div>
                       <div className="flex flex-col gap-2">
-                      <p>Гарах хаалт</p>                   
+                      <p>Гарах хаалт</p>      
+                      <div className="grid grid-cols-1 gap-2">
+                          <div className=" flex flex-col gap-2">
+                            <p>senser-3</p>
+                            <div
+                                className={`w-5 h-5 rounded-full transition-all duration-200
+                                ${data?.allInfo[2] == 1
+                                  ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)] scale-110"
+                                  : "bg-slate-500/50"}
+                                `}
+                              />
+                          </div>
+                          <div className=" flex flex-col gap-2">
+                            <p>senser-4</p>
+                            <div
+                                className={`w-5 h-5 rounded-full transition-all duration-200
+                                ${data?.allInfo[3] == 1
+                                  ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)] scale-110"
+                                  : "bg-slate-500/50"}
+                                `}
+                              />
+                          </div>
+                        </div>             
                       <ToggleButton onText = "Хаах" offText="Нээх" value = {exitGate}  disabled={!operatorMode} onToggle = {()=> controlPuuByRemote("exitGate",!exitGate)}/>
                       </div>
                     </div>
