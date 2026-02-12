@@ -242,7 +242,7 @@ export default function PuuPage() {
         // rfidRes,
         // lightRes,
         // lprRes,
-        // cam1Res,
+        cam1Res,
         // cam2Res,
         // cam3Res,
         // cam4Res,
@@ -255,7 +255,7 @@ export default function PuuPage() {
         // axios.get(`/api/puu/${id}/rfid`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
@@ -275,7 +275,7 @@ export default function PuuPage() {
         barrier3:allInfo?.data[3],
         barrier4:allInfo?.data[4],
         // lpr: lprRes?.data?.lpr || null,
-        // cam1: cam1Res?.data?.container || null,
+        cam1: cam1Res?.data?.container || null,
         // cam2: cam2Res?.data?.container || null,
         // cam3: cam3Res?.data?.container || null,
         // cam4: cam4Res?.data?.container || null,
@@ -624,7 +624,7 @@ async function controlPuuByRemote(name :string, value:any){
             
             <div>
               <TruckVisualization 
-                  containerId1={currentTruck.containerId1}
+                  containerId1={data?.cam1}
                   containerId2={currentTruck.containerId2}
                 />
             </div>
