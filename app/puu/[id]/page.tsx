@@ -23,63 +23,10 @@ import TruckVisualization from '@/components/dashboard/TruckVisualization';
 import NewTruckModal, { TruckFormData } from '@/components/dashboard/NewTruckModal';
 import SaveSuccessModal from '@/components/dashboard/SaveSuccessModal';
 
-
-type CameraGroup = {
-  [key: `cam${number}`]: string;
-};
-
-const ipCameraList: Record<number, CameraGroup> = {
-  1: {
-    cam1: "172.16.92.21",
-    cam2: "172.16.92.25",
-    cam3: "172.16.92.22",
-    cam4: "172.16.92.26",
-    cam5: "172.16.92.23",
-    cam6: "172.16.92.27",
-    cam7: "172.16.92.24",
-    cam8: "172.16.92.28",
-  },
-  2: {
-    cam1: "172.16.92.36",
-    cam2: "172.16.92.40",
-    cam3: "172.16.92.37",
-    cam4: "172.16.92.41",
-    cam5: "172.16.92.38",
-    cam6: "172.16.92.42",
-    cam7: "172.16.92.39",
-    cam8: "172.16.92.43",
-  },
-  3: {
-    cam1: "172.16.92.52",
-    cam2: "172.16.92.56",
-    cam3: "172.16.92.53",
-    cam4: "172.16.92.57",
-    cam5: "172.16.92.54",
-    cam6: "172.16.92.58",
-    cam7: "172.16.92.55",
-    cam8: "172.16.92.59",
-  },
-  4: {
-    cam1: "172.16.92.68",
-    cam2: "172.16.92.72",
-    cam3: "172.16.92.69",
-    cam4: "172.16.92.73",
-    cam5: "172.16.92.70",
-    cam6: "172.16.92.74",
-    cam7: "172.16.92.71",
-    cam8: "172.16.92.75",
-  },
-  5: {
-    cam1: "172.16.92.84",
-    cam2: "172.16.92.88",
-    cam3: "172.16.92.85",
-    cam4: "172.16.92.89",
-    cam5: "172.16.92.86",
-    cam6: "172.16.92.90",
-    cam7: "172.16.92.87",
-    cam8: "172.16.92.91",
-  },
-};
+import {ipCameraList} from '@/lib/utils';
+const MODBUS_SERVER_URL = process.env.NEXT_PUBLIC_MODBUS_SERVER_URL;
+const CAMERA_SERVER_URL = process.env.NEXT_PUBLIC_CAMERA_SERVER_URL;
+const TAG_READER_URL = process.env.NEXT_PUBLIC_TAG_READER_URL;
 
 const sleep = (ms:any) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -230,6 +177,7 @@ export default function PuuPage() {
     }
   };
 
+  console.log("-", MODBUS_SERVER_URL, CAMERA_SERVER_URL)
  useEffect(() => {
   if (!id) return;
   let isFirstLoad = true;
@@ -242,20 +190,20 @@ export default function PuuPage() {
         // rfidRes,
         // lightRes,
         // lprRes,
-        cam1Res,
+        // cam1Res,
         // cam2Res,
         // cam3Res,
-        // cam4Res,
+        cam4Res,
         // cam5Res,
         // cam6Res,
         // cam7Res,
         // cam8Res,
       ] = await Promise.all([
-        axios.get(`http://172.16.92.2:30511/read/3/${(parseInt(id.toString())-1) * 30}/30`),
+        // axios.get(`${MODBUS_SERVER_URL}/read/3/${(parseInt(id.toString())-1) * 30}/30`),
         // axios.get(`/api/puu/${id}/rfid`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
-        axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam4}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
@@ -266,6 +214,7 @@ export default function PuuPage() {
       ]);
 
       // Data-г default утгатай болгох
+      console.log('cam1Res--------',cam4Res?.data?.container)
       setData({
         allInfo:allInfo.data || null,
         id: Number(id),
@@ -275,7 +224,7 @@ export default function PuuPage() {
         barrier3:allInfo?.data[3],
         barrier4:allInfo?.data[4],
         // lpr: lprRes?.data?.lpr || null,
-        cam1: cam1Res?.data?.container || null,
+        cam1: cam4Res?.data?.container || null,
         // cam2: cam2Res?.data?.container || null,
         // cam3: cam3Res?.data?.container || null,
         // cam4: cam4Res?.data?.container || null,
@@ -415,11 +364,11 @@ async function controlPuuByRemote(name :string, value:any){
     console.error("POST Error:", err);
   }
 }
-
+console.log('------------------',data?.cam1)
   return (
     <div >
       <div className="w-full flex justify-center items-center">
-        <h1>Puu {id}</h1>
+        <h1>{data?.cam1} Puu {id}</h1>
       </div>
       {/* <div className=" flex justify-center items-center gap-1 py-4 mt-10">
         <CarHead data={data} />
