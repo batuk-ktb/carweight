@@ -178,6 +178,7 @@ export default function PuuPage() {
   };
 
   console.log("-", MODBUS_SERVER_URL, CAMERA_SERVER_URL)
+
  useEffect(() => {
   if (!id) return;
   let isFirstLoad = true;
@@ -199,7 +200,7 @@ export default function PuuPage() {
         // cam7Res,
         // cam8Res,
       ] = await Promise.all([
-        // axios.get(`${MODBUS_SERVER_URL}/read/3/${(parseInt(id.toString())-1) * 30}/30`),
+        axios.get(`${MODBUS_SERVER_URL}/read/3/${(parseInt(id.toString())-1) * 30}/30`),
         // axios.get(`/api/puu/${id}/rfid`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
@@ -364,7 +365,7 @@ async function controlPuuByRemote(name :string, value:any){
     console.error("POST Error:", err);
   }
 }
-console.log('------------------',data?.cam1)
+console.log('------------------',data)
   return (
     <div >
       <div className="w-full flex justify-center items-center">
