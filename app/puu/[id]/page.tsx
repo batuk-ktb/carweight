@@ -188,7 +188,7 @@ export default function PuuPage() {
     try {
       const [
         allInfo,
-        // rfidRes,
+        rfidRes,
         // lightRes,
         // lprRes,
         // cam1Res,
@@ -201,7 +201,7 @@ export default function PuuPage() {
         // cam8Res,
       ] = await Promise.all([
         axios.get(`${MODBUS_SERVER_URL}/read/3/${(parseInt(id.toString())-1) * 30}/30`),
-        // axios.get(`/api/puu/${id}/rfid`),
+        axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?name=4`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
         axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam4}`),
@@ -219,7 +219,7 @@ export default function PuuPage() {
       setData({
         allInfo:allInfo.data || null,
         id: Number(id),
-        // rfid: rfidRes?.data?.rfid || null,
+        rfid: rfidRes?.data?.tag || null,
         barrier1:allInfo?.data[1],
         barrier2:allInfo?.data[2],
         barrier3:allInfo?.data[3],
@@ -552,19 +552,10 @@ console.log('------------------',data)
                       <span className="text-white font-bold">{currentTruck.plateNumber}</span>
                     </div>
                     <div className="bg-[#0d1117] rounded px-3 py-2">
-                      <span className="text-gray-400 text-sm">Material: </span>
-                      <span className="text-white">{currentTruck.material}</span>
+                      <span className="text-gray-400 text-sm">Tagreader: </span>
+                      <span className="text-white">{data?.rfid}</span>
                     </div>
-                    <div className="bg-[#0d1117] rounded px-3 py-2">
-                      <span className="text-gray-400 text-sm">Tare: </span>
-                      <span className="text-white font-mono">{currentTruck.tareWeight.toLocaleString()} kg</span>
-                    </div>
-                    <div className="bg-[#0d1117] rounded px-3 py-2">
-                      <span className="text-gray-400 text-sm">Net: </span>
-                      <span className="text-yellow-500 font-bold font-mono">
-                        {(currentWeight - currentTruck.tareWeight).toLocaleString()} kg
-                      </span>
-                    </div>
+                    {/*   */}
                   </div>
                 </div>
               </div>

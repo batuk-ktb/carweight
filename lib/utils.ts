@@ -1,5 +1,7 @@
 type CameraGroup = {
   [key: `cam${number}`]: string;
+  lpr?:string;
+  rfid?:string;
 };
 
 export const ipCameraList: Record<number, CameraGroup> = {
@@ -12,6 +14,8 @@ export const ipCameraList: Record<number, CameraGroup> = {
     cam6: "172.16.92.27",
     cam7: "172.16.92.24",
     cam8: "172.16.92.28",
+    lpr: "172.16.92.30",
+    rfid: "172.16.92.31"
   },
   2: {
     cam1: "172.16.92.36",
@@ -22,6 +26,8 @@ export const ipCameraList: Record<number, CameraGroup> = {
     cam6: "172.16.92.42",
     cam7: "172.16.92.39",
     cam8: "172.16.92.43",
+    lpr: "172.16.92.45",
+    rfid: "172.16.92.46"
   },
   3: {
     cam1: "172.16.92.52",
@@ -32,6 +38,8 @@ export const ipCameraList: Record<number, CameraGroup> = {
     cam6: "172.16.92.58",
     cam7: "172.16.92.55",
     cam8: "172.16.92.59",
+    lpr: "172.16.92.61",
+    rfid: "172.16.92.62"
   },
   4: {
     cam1: "172.16.92.68",
@@ -42,6 +50,8 @@ export const ipCameraList: Record<number, CameraGroup> = {
     cam6: "172.16.92.74",
     cam7: "172.16.92.71",
     cam8: "172.16.92.75",
+    lpr: "172.16.92.77",
+    rfid: "172.16.92.78"
   },
   5: {
     cam1: "172.16.92.84",
@@ -52,5 +62,7 @@ export const ipCameraList: Record<number, CameraGroup> = {
     cam6: "172.16.92.90",
     cam7: "172.16.92.87",
     cam8: "172.16.92.91",
+    lpr: "172.16.92.93",
+    rfid: "172.16.92.94"
   },
 };
