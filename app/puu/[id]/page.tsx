@@ -195,7 +195,7 @@ export default function PuuPage() {
         // cam2Res,
         // cam3Res,
         cam4Res,
-        // cam5Res,
+        cam5Res,
         // cam6Res,
         // cam7Res,
         // cam8Res,
@@ -205,7 +205,7 @@ export default function PuuPage() {
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
         axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam4}`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam5}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
         // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
@@ -226,7 +226,7 @@ export default function PuuPage() {
         barrier4:allInfo?.data[4],
         // lpr: lprRes?.data?.lpr || null,
         cam1: cam4Res?.data?.container || null,
-        // cam2: cam2Res?.data?.container || null,
+        cam2: cam5Res?.data?.container || null,
         // cam3: cam3Res?.data?.container || null,
         // cam4: cam4Res?.data?.container || null,
         // cam5: cam5Res?.data?.container || null,
@@ -549,7 +549,7 @@ console.log('------------------',data)
                   <div className="mt-4 flex flex-wrap gap-3">
                     <div className="bg-[#0d1117] rounded px-3 py-2">
                       <span className="text-gray-400 text-sm">Plate: </span>
-                      <span className="text-white font-bold">{currentTruck.plateNumber}</span>
+                      <span className="text-white font-bold">{}</span>
                     </div>
                     <div className="bg-[#0d1117] rounded px-3 py-2">
                       <span className="text-gray-400 text-sm">Tagreader: </span>
@@ -566,7 +566,7 @@ console.log('------------------',data)
             <div>
               <TruckVisualization 
                   containerId1={data?.cam1}
-                  containerId2={currentTruck.containerId2}
+                  containerId2={data?.cam2}
                 />
             </div>
             {/* Camera Views */}
