@@ -571,19 +571,8 @@ console.log('------------------',data)
             </div>
             {/* Camera Views */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <CameraView 
-                title="Container 3 - Side View" 
-                cameraId="C3-2"
-                snapshot={cameraSnapshots.c3}
-                isCapturing={isCapturing}
-              />
-              <CameraView 
-                title="Container 4 - Side View" 
-                cameraId="C4-2"
-                snapshot={cameraSnapshots.c4}
-                isCapturing={isCapturing}
-              />
-              <video src="http://localhost:8888/cam/"></video>
+              <CameraView title="Entrance Camera" cameraId="cam" />
+             <CameraView title="exit Camera" cameraId="cam" />
             </div>
             
             {/* Transaction Table */}

@@ -3,17 +3,19 @@ import { Camera, Image } from 'lucide-react';
 
 interface CameraViewProps {
   title: string;
-  cameraId: string;
-  snapshot?: string | null;
+  cameraId: string;   // cam1, cam2 гэх мэт (MediaMTX path)
   isCapturing?: boolean;
 }
 
 const CameraView: React.FC<CameraViewProps> = ({ 
   title, 
-  cameraId, 
-  snapshot = null,
+  cameraId,
   isCapturing = false 
 }) => {
+
+  const streamUrl = `http://127.0.0.1:8888/${cameraId}/`;
+  // ↑ 192.168.1.10 = MediaMTX ажиллаж байгаа PC
+
   return (
     <div className="bg-[#1a2332] rounded-lg overflow-hidden shadow-xl">
       <div className="bg-[#252f3f] px-4 py-2 flex items-center justify-between">
@@ -28,24 +30,17 @@ const CameraView: React.FC<CameraViewProps> = ({
         {isCapturing ? (
           <div className="flex flex-col items-center gap-3">
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <span className="text-gray-400 text-sm">Capturing...</span>
+            <span className="text-gray-400 text-sm">Connecting...</span>
           </div>
-        ) : snapshot ? (
-          <img 
-            src={snapshot} 
-            alt={title} 
-            className="w-full h-full object-cover"
-          />
         ) : (
-          <div className="flex flex-col items-center gap-3 text-gray-500">
-            <div className="w-16 h-16 rounded-full bg-[#1a2332] flex items-center justify-center">
-              <Image className="w-8 h-8" />
-            </div>
-            <span className="text-sm">No snapshot</span>
-          </div>
+          <iframe
+            src={streamUrl}
+            className="w-full h-full"
+            allow="autoplay"
+            style={{ border: 'none' }}
+          />
         )}
-        
-        {/* Overlay grid lines */}
+
         <div className="absolute inset-0 pointer-events-none">
           <div className="w-full h-full border border-gray-800 opacity-50"></div>
         </div>
