@@ -583,6 +583,7 @@ console.log('------------------',data)
                 snapshot={cameraSnapshots.c4}
                 isCapturing={isCapturing}
               />
+              <video src="http://localhost:8888/cam/"></video>
             </div>
             
             {/* Transaction Table */}
