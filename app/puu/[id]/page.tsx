@@ -201,7 +201,7 @@ export default function PuuPage() {
         // cam8Res,
       ] = await Promise.all([
         axios.get(`${MODBUS_SERVER_URL}/read/3/${(parseInt(id.toString())-1) * 30}/30`),
-        axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?name=4`),
+        axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[(id)].rfid}`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
         axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam4}`),
