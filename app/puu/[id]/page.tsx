@@ -204,18 +204,17 @@ export default function PuuPage() {
         axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[(id)].rfid}`),
         // axios.get(`/api/puu/${id}/light`),
         // axios.get(`/api/puu/${id}/lpr`),
+        // axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam1}`),
+        // axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam2}`),
+        // axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam3}`),
         axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam4}`),
         axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam5}`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
-        // axios.get(`http://172.16.92.2:8000/api/camera/?ipaddress=${ipCameraList[(id)]}`),
+        // axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam6}`),
+        // axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam7}`),
+        // axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam8}`),
       ]);
 
       // Data-г default утгатай болгох
-      console.log('cam1Res--------',cam4Res?.data?.container)
       setData({
         allInfo:allInfo.data || null,
         id: Number(id),
@@ -225,11 +224,11 @@ export default function PuuPage() {
         barrier3:allInfo?.data[3],
         barrier4:allInfo?.data[4],
         // lpr: lprRes?.data?.lpr || null,
-        cam1: cam4Res?.data?.container || null,
-        cam2: cam5Res?.data?.container || null,
+        // cam1: cam1Res?.data?.container || null,
+        // cam2: cam2Res?.data?.container || null,
         // cam3: cam3Res?.data?.container || null,
-        // cam4: cam4Res?.data?.container || null,
-        // cam5: cam5Res?.data?.container || null,
+        cam4: cam4Res?.data?.container || null,
+        cam5: cam5Res?.data?.container || null,
         // cam6: cam6Res?.data?.container || null,
         // cam7: cam7Res?.data?.container || null,
         // cam8: cam8Res?.data?.container || null,
@@ -365,11 +364,10 @@ async function controlPuuByRemote(name :string, value:any){
     console.error("POST Error:", err);
   }
 }
-console.log('------------------',data)
   return (
     <div >
       <div className="w-full flex justify-center items-center">
-        <h1>{data?.cam1} Puu {id}</h1>
+        <h1> Puu {id}</h1>
       </div>
       {/* <div className=" flex justify-center items-center gap-1 py-4 mt-10">
         <CarHead data={data} />
@@ -565,16 +563,27 @@ console.log('------------------',data)
             
             <div>
               <TruckVisualization 
-                  containerId1={data?.cam1}
-                  containerId2={data?.cam2}
+                  containerId1={data?.cam4}
+                  containerId2={data?.cam5}
                 />
             </div>
             {/* Camera Views */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <CameraView title="Entrance Camera" cameraId="cam" />
-             <CameraView title="exit Camera" cameraId="cam" />
+              <CameraView title="Entrance Camera" cameraId="cam1" />
+              <CameraView title="exit Camera" cameraId="cam2" />
             </div>
-            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <CameraView title="Entrance Camera" cameraId="cam3" />
+              <CameraView title="exit Camera" cameraId="cam4" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <CameraView title="Entrance Camera" cameraId="cam5" />
+              <CameraView title="exit Camera" cameraId="cam6" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <CameraView title="Entrance Camera" cameraId="cam7" />
+              <CameraView title="exit Camera" cameraId="cam8" />
+            </div>
             {/* Transaction Table */}
             <TransactionTable
               transactions={paginatedTransactions}

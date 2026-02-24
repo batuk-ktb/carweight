@@ -6,7 +6,7 @@ type CameraGroup = {
 
 export const ipCameraList: Record<number, CameraGroup> = {
   1: {
-    cam1: "192.168.1.1",//"172.16.92.21",
+    cam1: "172.16.92.21",
     cam2: "172.16.92.25",
     cam3: "172.16.92.22",
     cam4: "172.16.92.26",
