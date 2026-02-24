@@ -569,20 +569,20 @@ async function controlPuuByRemote(name :string, value:any){
             </div>
             {/* Camera Views */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <CameraView title="Entrance Camera" cameraId="cam1" />
-              <CameraView title="exit Camera" cameraId="cam2" />
+              <CameraView title="Entrance Camera" cameraId={`cam${id}1`}/>
+              <CameraView title="exit Camera" cameraId={`cam${id}2`} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <CameraView title="Entrance Camera" cameraId="cam3" />
-              <CameraView title="exit Camera" cameraId="cam4" />
+              <CameraView title="Entrance Camera" cameraId={`cam${id}3`} />
+              <CameraView title="exit Camera" cameraId={`cam${id}4`} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <CameraView title="Entrance Camera" cameraId="cam5" />
-              <CameraView title="exit Camera" cameraId="cam6" />
+              <CameraView title="Entrance Camera" cameraId={`cam${id}5`} />
+              <CameraView title="exit Camera" cameraId={`cam${id}6`} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <CameraView title="Entrance Camera" cameraId="cam7" />
-              <CameraView title="exit Camera" cameraId="cam8" />
+              <CameraView title="Entrance Camera" cameraId={`cam${id}7`} />
+              <CameraView title="exit Camera" cameraId={`cam${id}8`} />
             </div>
             {/* Transaction Table */}
             <TransactionTable
