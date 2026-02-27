@@ -215,6 +215,7 @@ export default function PuuPage() {
       ]);
 
       // Data-г default утгатай болгох
+      console.log('-------', allInfo , '======',allInfo?.data)
       setData({
         allInfo:allInfo.data || null,
         id: Number(id),
