@@ -389,7 +389,7 @@ export default function PuuPage() {
                         <ToggleButton onText="ON" offText="OFF" value={operatorMode} disabled={false} onToggle={() => controlPuuByRemote("operator", !operatorMode)} />
                       </div>
                       <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 12 }}>
-                        <p style={{ fontSize: 8, letterSpacing: "0.25em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", marginBottom: 10 }}>Гэрлийн төлөв</p>
+                        <p style={{ fontSize: 15, letterSpacing: "0.25em", color: "rgba(255, 255, 255, 0.61)", textTransform: "uppercase", marginBottom: 10 }}>Гэрлийн төлөв</p>
                         <div className="flex gap-4 justify-center">
                           {[
                             { key: "green",  label: "GREEN",  active: green,  activeClass: "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)]" },
@@ -401,7 +401,7 @@ export default function PuuPage() {
                                 onClick={() => { if (operatorMode) controlPuuByRemote(light.key, !light.active); }}
                                 className={`w-5 h-5 rounded-full transition-all duration-200 ${light.active ? `${light.activeClass} scale-110` : "bg-slate-500/50"} ${!operatorMode ? "opacity-40 cursor-not-allowed" : "cursor-pointer hover:scale-110"}`}
                               />
-                              <span style={{ fontSize: 7, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>{light.label}</span>
+                              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>{light.label}</span>
                             </div>
                           ))}
                         </div>
@@ -525,6 +525,14 @@ export default function PuuPage() {
                 containerId6={data?.cam6.container}
                 containerId7={data?.cam7.container}
                 containerId8={data?.cam8.container}
+                containerDate1={data?.cam1.date}
+                containerDate2={data?.cam2.date}
+                containerDate3={data?.cam3.date}
+                containerDate4={data?.cam4.date}
+                containerDate5={data?.cam5.date}
+                containerDate6={data?.cam6.date}
+                containerDate7={data?.cam7.date}
+                containerDate8={data?.cam8.date}
               />
             </div>
 
