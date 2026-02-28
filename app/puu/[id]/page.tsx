@@ -110,34 +110,93 @@ export default function PuuPage() {
     setShowNewTruckModal(false);
   };
 
-  const handleCaptureCamera = () => {
-    setIsCapturing(true);
-    setTimeout(() => {
-      setCameraSnapshots({ c3: 'captured', c4: 'captured' });
-      setIsCapturing(false);
-    }, 1500);
+  const handleCaptureCamera = async() => {
+    const baseAdd = (parseInt(id.toString())-1) * 30
+        let registerAdd1 = baseAdd + 13;
+        let registerValue1 =1;
+        const payload1 = { "reg_addr": registerAdd1, "reg_value": registerValue1 }
+        await axios.post(`${MODBUS_SERVER_URL}/write/`, payload1, { headers: { "Content-Type": "application/json" } });
   };
 
   const handleSaveTransaction = async () => {
     setIsSaving(true);
     try {
-      const netWeight = currentWeight - currentTruck.tareWeight;
-      const containerWeight = Math.floor(netWeight / 4);
-      const newTransaction: Transaction = {
-        id:'1',
-        plateNumber: currentTruck.plateNumber,
-        material: currentTruck.material,
-        grossWeight: currentWeight,
-        tareWeight: currentTruck.tareWeight,
-        netWeight: netWeight,
-        containerWeights: {
-          c1: containerWeight + 1,
-          c2: containerWeight + 20,
-          c3: containerWeight + 60,
-          c4: containerWeight + 100
-        },
-        timestamp: new Date().toISOString().slice(0, 16).replace('T', ' ')
-      };
+      const bodyData ={
+          conR1:{
+            id:data?.cam1?.container,
+            date:data?.cam1?.date,
+            control_digit:data?.cam1?.controldigit,
+            readconfidence:data?.cam1?.readconfidence
+          },
+          conL1:{
+            id:data?.cam2?.container,
+            date:data?.cam2?.date,
+            control_digit:data?.cam2?.controldigit,
+            readconfidence:data?.cam2?.readconfidence
+          },
+          conR2:{
+            id:data?.cam3?.container,
+            date:data?.cam3?.date,
+            control_digit:data?.cam3?.controldigit,
+            readconfidence:data?.cam3?.readconfidence
+          },
+          conL2:{
+            id:data?.cam4?.container,
+            date:data?.cam4?.date,
+            control_digit:data?.cam4?.controldigit,
+            readconfidence:data?.cam4?.readconfidence
+          },
+          conR3:{
+            id:data?.cam5?.container,
+            date:data?.cam5?.date,
+            control_digit:data?.cam5?.controldigit,
+            readconfidence:data?.cam5?.readconfidence
+          },
+          conL3:{
+            id:data?.cam6?.container,
+            date:data?.cam6?.date,
+            control_digit:data?.cam6?.controldigit,
+            readconfidence:data?.cam6?.readconfidence
+          },
+          conR4:{
+            id:data?.cam7?.container,
+            date:data?.cam7?.date,
+            control_digit:data?.cam7?.controldigit,
+            readconfidence:data?.cam7?.readconfidence
+          },
+          conL4:{
+            id:data?.cam8?.container,
+            date:data?.cam8?.date,
+            control_digit:data?.cam8?.controldigit,
+            readconfidence:data?.cam8?.readconfidence
+          },
+          Weight: 10 * int16PairToFloat(parseInt(data?.allInfo[21]), parseInt(data?.allInfo[20])),
+          tag:{
+            id:data?.rfid?.tag,
+            date:data?.rfid?.date
+          }
+      }
+      const url = "https://your-api-url.com/endpoint" // 👈 URL-ээ энд тавина
+      const response = await axios.post(
+        url, 
+        bodyData, // 👈 илгээх data
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if(response){
+        //TODO hed heden yum irne tegeed yum hiine
+        // 0 - heviin 
+        // 1 - yavj bolno 
+        // 2 - yavj bolohgui
+        const baseAdd = (parseInt(id.toString())-1) * 30
+        let registerAdd1 = baseAdd + 13;
+        let registerValue1 = parseInt(response?.data?.authentication);
+        const payload1 = { "reg_addr": registerAdd1, "reg_value": registerValue1 }
+        await axios.post(`${MODBUS_SERVER_URL}/write/`, payload1, { headers: { "Content-Type": "application/json" } });
+      }
       setShowSuccessModal(true);
     } catch (error) {
       console.error('Failed to save transaction:', error);
@@ -181,14 +240,14 @@ export default function PuuPage() {
           barrier2: allInfo?.data[2],
           barrier3: allInfo?.data[3],
           barrier4: allInfo?.data[4],
-          cam1: cam1Res?.data?.container || null,
-          cam2: cam2Res?.data?.container || null,
-          cam3: cam3Res?.data?.container || null,
-          cam4: cam4Res?.data?.container || null,
-          cam5: cam5Res?.data?.container || null,
-          cam6: cam6Res?.data?.container || null,
-          cam7: cam7Res?.data?.container || null,
-          cam8: cam8Res?.data?.container || null,
+          cam1: cam1Res?.data || null,
+          cam2: cam2Res?.data || null,
+          cam3: cam3Res?.data || null,
+          cam4: cam4Res?.data || null,
+          cam5: cam5Res?.data || null,
+          cam6: cam6Res?.data || null,
+          cam7: cam7Res?.data || null,
+          cam8: cam8Res?.data || null,
         });
         setRed(allInfo?.data[7] === 1)
         setYellow(allInfo?.data[6] === 1)
@@ -219,7 +278,7 @@ export default function PuuPage() {
       if (name == "entryGate") { registerAdd1 = value ? baseAdd + 10 : baseAdd + 9; registerValue1 = 0 }
       if (name == "exitGate")  { registerAdd1 = value ? baseAdd + 8  : baseAdd + 7; registerValue1 = 0 }
       const payload1 = { "reg_addr": registerAdd1, "reg_value": registerValue1 }
-      await axios.post("http://172.16.92.2:30511/write/", payload1, { headers: { "Content-Type": "application/json" } });
+      await axios.post(`${MODBUS_SERVER_URL}/write/`, payload1, { headers: { "Content-Type": "application/json" } });
     }
     let registerAdd = 11;
     let registerValue = value;
@@ -231,7 +290,7 @@ export default function PuuPage() {
     if (name == "exitGate")  { registerAdd = value ? baseAdd + 7  : baseAdd + 8;  registerValue = 1 }
     try {
       const payload = { "reg_addr": registerAdd, "reg_value": registerValue }
-      const res = await axios.post("http://172.16.92.2:30511/write/", payload, { headers: { "Content-Type": "application/json" } });
+      const res = await axios.post(`${MODBUS_SERVER_URL}/write/`, payload, { headers: { "Content-Type": "application/json" } });
       if (res) {
         if (name == "entryGate") setEntryGate(value)
         if (name == "exitGate")  setExitGate(value)
@@ -447,14 +506,14 @@ export default function PuuPage() {
             {/* Truck Visualization */}
             <div>
               <TruckVisualization
-                containerId1={data?.cam1}
-                containerId2={data?.cam3}
-                containerId3={data?.cam4}
-                containerId4={data?.cam7}
-                containerId5={data?.cam2}
-                containerId6={data?.cam4}
-                containerId7={data?.cam6}
-                containerId8={data?.cam8}
+                containerId1={data?.cam1.container}
+                containerId2={data?.cam2.container}
+                containerId3={data?.cam3.container}
+                containerId4={data?.cam4.container}
+                containerId5={data?.cam5.container}
+                containerId6={data?.cam6.container}
+                containerId7={data?.cam7.container}
+                containerId8={data?.cam8.container}
               />
             </div>
 
