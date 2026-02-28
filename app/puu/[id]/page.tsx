@@ -290,14 +290,13 @@ export default function PuuPage() {
     try {
       const payload = { "reg_addr": registerAdd, "reg_value": registerValue }
       const res = await axios.post(`${MODBUS_SERVER_URL}/write/`, payload, { headers: { "Content-Type": "application/json" } });
-      if (res) {
-        if (name == "entryGate") setEntryGate(value)
-        if (name == "exitGate")  setExitGate(value)
-        if (name == "operator")  setOperatorMode(value)
-        if (name == "green")     setGreen(value)
-        if (name == "red")       setRed(value)
-      }
-      console.log("POST Response:", res.data);
+      // if (res) {
+      //   if (name == "entryGate") setEntryGate(value)
+      //   if (name == "exitGate")  setExitGate(value)
+      //   if (name == "operator")  setOperatorMode(value)
+      //   if (name == "green")     setGreen(value)
+      //   if (name == "red")       setRed(value)
+      // }
     } catch (err) {
       console.error("POST Error:", err);
     }
@@ -407,6 +406,9 @@ export default function PuuPage() {
                         </div>
                         {/* position auto local */}
                         <div className="text-white">
+                          <div>{data?.allInfo}</div>
+                          <div>{data?.allInfo[15]}</div>
+                          <div>{data?.allInfo[16]}</div>
                           {data?.allInfo[15] == 1 &&
                             <div>
                               pos Auto
