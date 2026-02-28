@@ -437,7 +437,7 @@ export default function PuuPage() {
                     <span style={{ marginLeft: "auto", fontSize: 7, color: "rgba(255,255,255,0.3)", letterSpacing: "0.15em" }}>{`cam${id}1`}</span>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <CameraView title="Үндсэн камер" cameraId={`cam${id}1`} />
+                    <CameraView title="Үндсэн камер" cameraId={`cam${id}axis`} />
                   </div>
                 </div>
               </div>{/* end right column */}
