@@ -282,9 +282,8 @@ export default function PuuPage() {
     }
     let registerAdd = 11;
     let registerValue = value;
-    if (name == "green")    { registerAdd = baseAdd + 4;  registerValue = value ? 1 : 0 }
-    if (name == "yellow")   { registerAdd = baseAdd + 5;  registerValue = value ? 1 : 0 }
-    if (name == "red")      { registerAdd = baseAdd + 6;  registerValue = value ? 1 : 0 }
+    if (name == "green")    { registerAdd = baseAdd + 18;  registerValue = value ? 1 : 0 }
+    if (name == "red")      { registerAdd = baseAdd + 17;  registerValue = value ? 1 : 0 }
     if (name == "operator") { registerAdd = baseAdd + 11; registerValue = value ? 1 : 0 }
     if (name == "entryGate") { registerAdd = value ? baseAdd + 9  : baseAdd + 10; registerValue = 1 }
     if (name == "exitGate")  { registerAdd = value ? baseAdd + 7  : baseAdd + 8;  registerValue = 1 }
@@ -296,7 +295,6 @@ export default function PuuPage() {
         if (name == "exitGate")  setExitGate(value)
         if (name == "operator")  setOperatorMode(value)
         if (name == "green")     setGreen(value)
-        if (name == "yellow")    setYellow(value)
         if (name == "red")       setRed(value)
       }
       console.log("POST Response:", res.data);
