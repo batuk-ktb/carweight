@@ -514,26 +514,29 @@ export default function PuuPage() {
             </div>
 
             {/* Truck Visualization */}
-            <div>
-              <TruckVisualization
-                containerId1={data?.cam1.container}
-                containerId2={data?.cam2.container}
-                containerId3={data?.cam3.container}
-                containerId4={data?.cam4.container}
-                containerId5={data?.cam5.container}
-                containerId6={data?.cam6.container}
-                containerId7={data?.cam7.container}
-                containerId8={data?.cam8.container}
-                containerDate1={data?.cam1.date}
-                containerDate2={data?.cam2.date}
-                containerDate3={data?.cam3.date}
-                containerDate4={data?.cam4.date}
-                containerDate5={data?.cam5.date}
-                containerDate6={data?.cam6.date}
-                containerDate7={data?.cam7.date}
-                containerDate8={data?.cam8.date}
-              />
-            </div>
+            {
+              id < 6 &&
+              <div>
+                <TruckVisualization
+                  containerId1={data?.cam1.container}
+                  containerId2={data?.cam2.container}
+                  containerId3={data?.cam3.container}
+                  containerId4={data?.cam4.container}
+                  containerId5={data?.cam5.container}
+                  containerId6={data?.cam6.container}
+                  containerId7={data?.cam7.container}
+                  containerId8={data?.cam8.container}
+                  containerDate1={data?.cam1.date}
+                  containerDate2={data?.cam2.date}
+                  containerDate3={data?.cam3.date}
+                  containerDate4={data?.cam4.date}
+                  containerDate5={data?.cam5.date}
+                  containerDate6={data?.cam6.date}
+                  containerDate7={data?.cam7.date}
+                  containerDate8={data?.cam8.date}
+                />
+              </div>
+            }
 
             {/* Camera Views */}
             {id < 6 &&
