@@ -406,9 +406,6 @@ export default function PuuPage() {
                         </div>
                         {/* position auto local */}
                         <div className="text-white">
-                          <div>{data?.allInfo}</div>
-                          <div>{data?.allInfo[15]}</div>
-                          <div>{data?.allInfo[16]}</div>
                           {data?.allInfo[15] == 1 &&
                             <div>
                               pos Auto
@@ -539,7 +536,8 @@ export default function PuuPage() {
             </div>
 
             {/* Camera Views */}
-            {[
+            {id < 6 &&
+            [
               { label: "1", cams: [{ title: "Чингэлэг - 1 баруун", id: `cam${id}1` }, { title: "Чингэлэг - 1 зүүн", id: `cam${id}2` }] },
               { label: "2", cams: [{ title: "Чингэлэг - 2 баруун", id: `cam${id}3` }, { title: "Чингэлэг - 2 зүүн", id: `cam${id}4` }] },
               { label: "3", cams: [{ title: "Чингэлэг - 3 баруун", id: `cam${id}5` }, { title: "Чингэлэг - 3 зүүн", id: `cam${id}6` }] },
