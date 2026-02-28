@@ -405,6 +405,19 @@ export default function PuuPage() {
                             </div>
                           ))}
                         </div>
+                        {/* position auto local */}
+                        <div>
+                          {data?.allInfo[15] == 1 &&
+                            <div>
+                              pos Auto
+                            </div>
+                          }
+                          {data?.allInfo[16] == 1 &&
+                            <div>
+                              pos Local
+                            </div>
+                          }
+                        </div>
                       </div>
                     </div>
 
