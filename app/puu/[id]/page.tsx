@@ -406,7 +406,7 @@ export default function PuuPage() {
                           ))}
                         </div>
                         {/* position auto local */}
-                        <div>
+                        <div className="text-white">
                           {data?.allInfo[15] == 1 &&
                             <div>
                               pos Auto
