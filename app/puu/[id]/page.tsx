@@ -249,9 +249,9 @@ export default function PuuPage() {
           cam7: cam7Res?.data || null,
           cam8: cam8Res?.data || null,
         });
-        setRed(allInfo?.data[7] === 1)
-        setYellow(allInfo?.data[6] === 1)
-        setGreen(allInfo?.data[5] === 1)
+        setRed(allInfo?.data[6] === 1)
+        setYellow(allInfo?.data[5] === 1)
+        setGreen(allInfo?.data[4] === 1)
         setOperatorMode(allInfo?.data[11] === 1)
       } catch (error) {
         console.error("PUU API error:", error);
