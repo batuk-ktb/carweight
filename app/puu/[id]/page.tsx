@@ -214,23 +214,39 @@ export default function PuuPage() {
     const fetchAllData = async () => {
       if (isFirstLoad) setLoader(true);
       try {
+        
+        const requests = [];
+
+        // modbus
+        requests.push(
+          axios.get(`${MODBUS_SERVER_URL}/read/3/${(id - 1) * 30}/30`)
+        );
+
+        // rfid
+        requests.push(
+          axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[id].rfid}`)
+        );
+        if(id < 6){
+          // cameras 1-8
+          for (let i = 1; i <= 8; i++) {
+            requests.push(
+              axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[id][`cam${i}`]}`)
+            );
+          }
+        }
+
+        // helper
+        const safeData = (r:any) =>
+          r.status === "fulfilled" ? r.value.data : null;
+
+        // execute
+
         const [
-          allInfo,
-          rfidRes,
-          cam1Res, cam2Res, cam3Res, cam4Res,
-          cam5Res, cam6Res, cam7Res, cam8Res,
-        ] = await Promise.all([
-          axios.get(`${MODBUS_SERVER_URL}/read/3/${(parseInt(id.toString())-1) * 30}/30`),
-          axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[(id)].rfid}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam1}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam2}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam3}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam4}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam5}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam6}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam7}`),
-          axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[(id)].cam8}`),
-        ]);
+          allInfo = null,
+          rfidRes = null,
+          cam1Res = null, cam2Res = null, cam3Res = null, cam4Res = null,
+          cam5Res = null, cam6Res = null, cam7Res = null, cam8Res = null,
+        ] = (await Promise.allSettled(requests)).map(safeData);
 
         setData({
           allInfo: allInfo.data || null,
@@ -253,6 +269,8 @@ export default function PuuPage() {
         setYellow(allInfo?.data[5] === 1)
         setGreen(allInfo?.data[4] === 1)
         setOperatorMode(allInfo?.data[11] === 1)
+        setEntryGate(allInfo?.data[9] ==1)
+        setExitGate(allInfo?.data[7]==1)
       } catch (error) {
         console.error("PUU API error:", error);
       } finally {
@@ -290,13 +308,13 @@ export default function PuuPage() {
     try {
       const payload = { "reg_addr": registerAdd, "reg_value": registerValue }
       const res = await axios.post(`${MODBUS_SERVER_URL}/write/`, payload, { headers: { "Content-Type": "application/json" } });
-      // if (res) {
-      //   if (name == "entryGate") setEntryGate(value)
-      //   if (name == "exitGate")  setExitGate(value)
-      //   if (name == "operator")  setOperatorMode(value)
-      //   if (name == "green")     setGreen(value)
-      //   if (name == "red")       setRed(value)
-      // }
+      if (res) {
+        if (name == "entryGate") setEntryGate(value)
+        if (name == "exitGate")  setExitGate(value)
+        if (name == "operator")  setOperatorMode(value)
+        if (name == "green")     setGreen(value)
+        if (name == "red")       setRed(value)
+      }
     } catch (err) {
       console.error("POST Error:", err);
     }
