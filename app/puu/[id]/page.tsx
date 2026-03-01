@@ -176,10 +176,10 @@ export default function PuuPage() {
             date:data?.rfid?.date
           }
       }
-      const url = "https://your-api-url.com/endpoint" // 👈 URL-ээ энд тавина
+      const url = "https://your-api-url.com/endpoint" // JSON ETT server URL
       const response = await axios.post(
         url, 
-        bodyData, // 👈 илгээх data
+        bodyData, // write data
         {
           headers: {
             "Content-Type": "application/json",

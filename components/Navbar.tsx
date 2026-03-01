@@ -182,7 +182,7 @@ export default function Navbar({ puuStatus }: NavbarProps) {
           <div style={{ padding: "12px 16px 8px", borderBottom: "1px solid rgba(0,229,255,0.06)", position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div>
               <div style={{ fontSize: 7, letterSpacing: "0.35em", color: "rgba(0,229,255,0.4)", textTransform: "uppercase", marginBottom: 2 }}>Terminal</div>
-              <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", letterSpacing: "0.06em", textTransform: "uppercase" }}>ПҮҮ STATUS</div>
+              <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", letterSpacing: "0.06em", textTransform: "uppercase" }}>PLC STATUS</div>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
               <span style={{ fontSize: 8, color: "rgba(34,197,94,0.7)", letterSpacing: "0.1em", fontWeight: 700 }}>● {status.filter(Boolean).length} ON</span>

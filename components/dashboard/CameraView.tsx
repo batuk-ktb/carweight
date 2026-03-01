@@ -13,7 +13,7 @@ const CameraView: React.FC<CameraViewProps> = ({
   isCapturing = false 
 }) => {
 
-  const streamUrl = `http://127.0.0.1:8888/${cameraId}/`;
+  const streamUrl = `http://172.16.92.2:8888/${cameraId}/`;
   // ↑ 192.168.1.10 = MediaMTX ажиллаж байгаа PC
 
   return (

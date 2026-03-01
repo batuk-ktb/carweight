@@ -2,9 +2,6 @@
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
-
-const MODBUS_SERVER_URL = process.env.NEXT_PUBLIC_MODBUS_SERVER_URL;
 
 const PUU_LABELS: Record<number, string> = {
   1: "Оролт 1", 2: "Оролт 2", 3: "Оролт 3", 4: "Оролт 4", 5: "Оролт 5",
@@ -16,23 +13,13 @@ const PUU_LABELS: Record<number, string> = {
 export default function Dashboard() {
   const [status, setStatus] = useState<boolean[]>([]);
 
-    useEffect(() => {
-    const fetchAllStatus = async () => {
-      const startAddress = 0;
-      const step = 30;
-      const count = 20;
-
-      const requests = Array.from({ length: count }, (_, i) =>
-        axios.get(`${MODBUS_SERVER_URL}/read/3/${startAddress + i * step}/30`)
-      );
-
-      const puuList = await Promise.all(requests);
-      const puuStatus = puuList.map((puu) => puu?.data[29] == 1)
-      console.log('puu status', puuStatus)
-      setStatus(puuStatus)
-    }
-    fetchAllStatus()
-  }, [])
+  useEffect(() => {
+    setStatus([
+      true, false, true, true, false, true, true, false, true, true,
+      false, true, true, false, true, true, false, true, true, false,
+      true, true, false, true,
+    ]);
+  }, []);
 
   const panelStyle: React.CSSProperties = {
     fontFamily: "'Courier New', monospace",
