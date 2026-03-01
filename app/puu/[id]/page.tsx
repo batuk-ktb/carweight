@@ -251,7 +251,7 @@ export default function PuuPage() {
         setData({
           allInfo: allInfo || null,
           id: Number(id),
-          rfid: rfidRes?.data || null,
+          rfid: rfidRes || null,
           barrier1: allInfo[1],
           barrier2: allInfo[2],
           barrier3: allInfo[3],
@@ -308,13 +308,13 @@ export default function PuuPage() {
     try {
       const payload = { "reg_addr": registerAdd, "reg_value": registerValue }
       const res = await axios.post(`${MODBUS_SERVER_URL}/write/`, payload, { headers: { "Content-Type": "application/json" } });
-      if (res) {
-        if (name == "entryGate") setEntryGate(value)
-        if (name == "exitGate")  setExitGate(value)
-        if (name == "operator")  setOperatorMode(value)
-        if (name == "green")     setGreen(value)
-        if (name == "red")       setRed(value)
-      }
+      // if (res) {
+      //   if (name == "entryGate") setEntryGate(value)
+      //   if (name == "exitGate")  setExitGate(value)
+      //   if (name == "operator")  setOperatorMode(value)
+      //   if (name == "green")     setGreen(value)
+      //   if (name == "red")       setRed(value)
+      // }
     } catch (err) {
       console.error("POST Error:", err);
     }
