@@ -226,6 +226,7 @@ export default function PuuPage() {
         requests.push(
           axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[id].rfid}`)
         );
+
         if(id < 6){
           // cameras 1-8
           for (let i = 1; i <= 8; i++) {
@@ -250,7 +251,6 @@ export default function PuuPage() {
 
         setData({
           allInfo: allInfo || null,
-          id: Number(id),
           rfid: rfidRes || null,
           barrier1: allInfo[1],
           barrier2: allInfo[2],
