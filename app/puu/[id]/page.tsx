@@ -249,28 +249,28 @@ export default function PuuPage() {
         ] = (await Promise.allSettled(requests)).map(safeData);
 
         setData({
-          allInfo: allInfo.data || null,
+          allInfo: allInfo || null,
           id: Number(id),
           rfid: rfidRes?.data || null,
-          barrier1: allInfo?.data[1],
-          barrier2: allInfo?.data[2],
-          barrier3: allInfo?.data[3],
-          barrier4: allInfo?.data[4],
-          cam1: cam1Res?.data || null,
-          cam2: cam2Res?.data || null,
-          cam3: cam3Res?.data || null,
-          cam4: cam4Res?.data || null,
-          cam5: cam5Res?.data || null,
-          cam6: cam6Res?.data || null,
-          cam7: cam7Res?.data || null,
-          cam8: cam8Res?.data || null,
+          barrier1: allInfo[1],
+          barrier2: allInfo[2],
+          barrier3: allInfo[3],
+          barrier4: allInfo[4],
+          cam1: cam1Res || null,
+          cam2: cam2Res || null,
+          cam3: cam3Res || null,
+          cam4: cam4Res || null,
+          cam5: cam5Res || null,
+          cam6: cam6Res || null,
+          cam7: cam7Res || null,
+          cam8: cam8Res || null,
         });
-        setRed(allInfo?.data[6] === 1)
-        setYellow(allInfo?.data[5] === 1)
-        setGreen(allInfo?.data[4] === 1)
-        setOperatorMode(allInfo?.data[11] === 1)
-        setEntryGate(allInfo?.data[9] ==1)
-        setExitGate(allInfo?.data[7]==1)
+        setRed(allInfo[6] === 1)
+        setYellow(allInfo[5] === 1)
+        setGreen(allInfo[4] === 1)
+        setOperatorMode(allInfo[11] === 1)
+        setEntryGate(allInfo[9] ==1)
+        setExitGate(allInfo[7]==1)
       } catch (error) {
         console.error("PUU API error:", error);
       } finally {
