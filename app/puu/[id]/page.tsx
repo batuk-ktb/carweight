@@ -121,62 +121,36 @@ export default function PuuPage() {
   const handleSaveTransaction = async () => {
     setIsSaving(true);
     try {
-      const bodyData ={
-          conR1:{
-            id:data?.cam1?.container,
-            date:data?.cam1?.date,
-            control_digit:data?.cam1?.controldigit,
-            readconfidence:data?.cam1?.readconfidence
-          },
-          conL1:{
-            id:data?.cam2?.container,
-            date:data?.cam2?.date,
-            control_digit:data?.cam2?.controldigit,
-            readconfidence:data?.cam2?.readconfidence
-          },
-          conR2:{
-            id:data?.cam3?.container,
-            date:data?.cam3?.date,
-            control_digit:data?.cam3?.controldigit,
-            readconfidence:data?.cam3?.readconfidence
-          },
-          conL2:{
-            id:data?.cam4?.container,
-            date:data?.cam4?.date,
-            control_digit:data?.cam4?.controldigit,
-            readconfidence:data?.cam4?.readconfidence
-          },
-          conR3:{
-            id:data?.cam5?.container,
-            date:data?.cam5?.date,
-            control_digit:data?.cam5?.controldigit,
-            readconfidence:data?.cam5?.readconfidence
-          },
-          conL3:{
-            id:data?.cam6?.container,
-            date:data?.cam6?.date,
-            control_digit:data?.cam6?.controldigit,
-            readconfidence:data?.cam6?.readconfidence
-          },
-          conR4:{
-            id:data?.cam7?.container,
-            date:data?.cam7?.date,
-            control_digit:data?.cam7?.controldigit,
-            readconfidence:data?.cam7?.readconfidence
-          },
-          conL4:{
-            id:data?.cam8?.container,
-            date:data?.cam8?.date,
-            control_digit:data?.cam8?.controldigit,
-            readconfidence:data?.cam8?.readconfidence
-          },
-          Weight: 10 * int16PairToFloat(parseInt(data?.allInfo[21]), parseInt(data?.allInfo[20])),
-          tag:{
-            id:data?.rfid?.tag,
-            date:data?.rfid?.date
-          }
-      }
-      const url = "https://your-api-url.com/endpoint" // JSON ETT server URL
+      const puuName = Number(id) >= 1  && Number(id) <= 5  ? `Оролтын пүү: ${Number(id)}`
+                    : Number(id) >= 6  && Number(id) <= 10 ? `Гаралтын пүү: ${Number(id) - 5}`
+                    : Number(id) >= 11 && Number(id) <= 14 ? `Зүүн хяналтын пүү: ${Number(id) - 10}`
+                    : `Баруун хяналтын пүү: ${Number(id) - 14}`;
+
+      // Base data — always sent
+      const baseData = {
+        puuName,
+        puuId: id,
+        Weight: 10 * int16PairToFloat(parseInt(data?.allInfo[21]), parseInt(data?.allInfo[20])),
+        tag: {
+          id:   data?.rfid?.tag,
+          date: data?.rfid?.date,
+        },
+      };
+
+      // Container data — only for Оролт (id 1–5)
+      const containerData = Number(id) <= 5 ? {
+        conR1: { id: data?.cam1?.container, date: data?.cam1?.date, control_digit: data?.cam1?.controldigit, readconfidence: data?.cam1?.readconfidence },
+        conL1: { id: data?.cam2?.container, date: data?.cam2?.date, control_digit: data?.cam2?.controldigit, readconfidence: data?.cam2?.readconfidence },
+        conR2: { id: data?.cam3?.container, date: data?.cam3?.date, control_digit: data?.cam3?.controldigit, readconfidence: data?.cam3?.readconfidence },
+        conL2: { id: data?.cam4?.container, date: data?.cam4?.date, control_digit: data?.cam4?.controldigit, readconfidence: data?.cam4?.readconfidence },
+        conR3: { id: data?.cam5?.container, date: data?.cam5?.date, control_digit: data?.cam5?.controldigit, readconfidence: data?.cam5?.readconfidence },
+        conL3: { id: data?.cam6?.container, date: data?.cam6?.date, control_digit: data?.cam6?.controldigit, readconfidence: data?.cam6?.readconfidence },
+        conR4: { id: data?.cam7?.container, date: data?.cam7?.date, control_digit: data?.cam7?.controldigit, readconfidence: data?.cam7?.readconfidence },
+        conL4: { id: data?.cam8?.container, date: data?.cam8?.date, control_digit: data?.cam8?.controldigit, readconfidence: data?.cam8?.readconfidence },
+      } : {};
+
+      const bodyData = { ...baseData, ...containerData };
+      const url = "https://172.16.92.6/TestServer" // JSON ETT server URL
       const response = await axios.post(
         url, 
         bodyData, // write data
@@ -284,9 +258,7 @@ export default function PuuPage() {
     return () => clearInterval(interval);
   }, [id]);
 
-  if (loader) {
-    return <div><Loader /></div>;
-  }
+  // ← REMOVED: if (loader) { return <div><Loader /></div>; }
 
   async function controlPuuByRemote(name: string, value: any) {
     const baseAdd = (parseInt(id.toString())-1) * 30
@@ -322,13 +294,15 @@ export default function PuuPage() {
 
   return (
     <div>
+      {/* ← Loader floats on top, page stays visible behind blur */}
+      {loader && <Loader />}
+
       <div className="min-h-screen bg-[#0d1117]">
 
         {/* ── Navbar ── */}
         <Navbar />
 
         <div className="flex">
-          {/* Main Content — paddingTop: 80 to clear the fixed 56px navbar */}
           <main className="flex-1 p-4 lg:p-6 overflow-x-hidden" style={{ paddingTop: 80 }}>
 
             {/* PUU Header */}
@@ -422,17 +396,12 @@ export default function PuuPage() {
                             </div>
                           ))}
                         </div>
-                        {/* position auto local */}
                         <div className="text-white">
                           {data?.allInfo[15] == 1 &&
-                            <div>
-                              pos Auto
-                            </div>
+                            <div>pos Auto</div>
                           }
                           {data?.allInfo[16] == 1 &&
-                            <div>
-                              pos Local
-                            </div>
+                            <div>pos Local</div>
                           }
                         </div>
                       </div>
@@ -505,7 +474,6 @@ export default function PuuPage() {
                   { bottom: 0, right: 0, borderBottom: "2px solid rgba(255,255,255,0.25)", borderRight: "2px solid rgba(255,255,255,0.25)", borderRadius: "0 0 12px 0" },
                 ].map((s, i) => <div key={i} style={{ position: "absolute", width: 40, height: 40, ...s }} />)}
 
-                {/* Camera header */}
                 <div className="relative z-10 flex items-center justify-between mb-4">
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 900, color: "#fff", letterSpacing: "0.05em" }}>LIVE VIEW</div>
@@ -516,7 +484,6 @@ export default function PuuPage() {
                   </div>
                 </div>
 
-                {/* Camera feed — grows to fill remaining height */}
                 <div className="relative z-10 flex-1" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, overflow: "hidden", display: "flex", flexDirection: "column", minHeight: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 12px", borderBottom: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)" }}>
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#fff", boxShadow: "0 0 6px rgba(255,255,255,0.8)" }} />
@@ -527,7 +494,7 @@ export default function PuuPage() {
                     <CameraView title="Үндсэн камер" cameraId={`cam${id}axis`} />
                   </div>
                 </div>
-              </div>{/* end right column */}
+              </div>
 
             </div>
 
