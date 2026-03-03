@@ -1,7 +1,7 @@
 import React from 'react';
 import { Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface Transaction {
+export interface Transaction {
   id: number;
   puuName: string;
   puuId: number;
