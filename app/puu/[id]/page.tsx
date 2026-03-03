@@ -59,10 +59,8 @@ export default function PuuPage() {
     return view.getFloat32(0, false);
   }
 
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isCapturing, setIsCapturing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showNewTruckModal, setShowNewTruckModal] = useState(false);
@@ -83,17 +81,9 @@ export default function PuuPage() {
     c4: null
   });
 
-  const today = new Date().toISOString().slice(0, 10);
-  const todayTransactions = transactions.filter(t => t.timestamp.startsWith(today));
-  const totalNetWeight = todayTransactions.reduce((sum, t) => sum + t.netWeight, 0) / 1000;
-  const averageLoad = todayTransactions.length > 0 ? totalNetWeight / todayTransactions.length : 0;
-
-  const itemsPerPage = 5;
-  const totalPages = Math.max(1, Math.ceil(transactions.length / itemsPerPage));
-  const paginatedTransactions = transactions.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1)
 
   const handleNewTruck = () => setShowNewTruckModal(true);
 
@@ -150,7 +140,7 @@ export default function PuuPage() {
       } : {};
 
       const bodyData = { ...baseData, ...containerData };
-      const url = "https://172.16.92.6/TestServer" // JSON ETT server URL
+      const url = "http://127.0.0.1:8000/api/transaction/" //"https://172.16.92.6/TestServer" // JSON ETT server URL
       const response = await axios.post(
         url, 
         bodyData, // write data
@@ -182,82 +172,99 @@ export default function PuuPage() {
 
   console.log("-", MODBUS_SERVER_URL, CAMERA_SERVER_URL)
 
-  useEffect(() => {
-    if (!id) return;
-    let isFirstLoad = true;
-    const fetchAllData = async () => {
-      if (isFirstLoad) setLoader(true);
-      try {
+  const fetchTransactions = async (page: number) => {
+    const API_URL = "http://127.0.0.1:8000"//"http://172.16.92.6:8000";
+    try {
+      const res = await axios.get(
+        `${API_URL}/api/transaction/?puuId=${id}&page=${page}`
+      );
+
+      setTransactions(res.data.transactions);
+      setTotalPages(res.data.totalPages);
+    } catch (err) {
+      console.error("Failed to fetch transactions", err);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (!id) return;
+  //   let isFirstLoad = true;
+  //   const fetchAllData = async () => {
+  //     if (isFirstLoad) setLoader(true);
+  //     try {
         
-        const requests = [];
+  //       const requests = [];
 
-        // modbus
-        requests.push(
-          axios.get(`${MODBUS_SERVER_URL}/read/3/${(id - 1) * 30}/30`)
-        );
+  //       // modbus
+  //       requests.push(
+  //         axios.get(`${MODBUS_SERVER_URL}/read/3/${(id - 1) * 30}/30`)
+  //       );
 
-        // rfid
-        requests.push(
-          axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[id].rfid}`)
-        );
+  //       // rfid
+  //       requests.push(
+  //         axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[id].rfid}`)
+  //       );
 
-        if(id < 6){
-          // cameras 1-8
-          for (let i = 1; i <= 8; i++) {
-            requests.push(
-              axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[id][`cam${i}`]}`)
-            );
-          }
-        }
+  //       if(id < 6){
+  //         // cameras 1-8
+  //         for (let i = 1; i <= 8; i++) {
+  //           requests.push(
+  //             axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[id][`cam${i}`]}`)
+  //           );
+  //         }
+  //       }
 
-        // helper
-        const safeData = (r:any) =>
-          r.status === "fulfilled" ? r.value.data : null;
+  //       // helper
+  //       const safeData = (r:any) =>
+  //         r.status === "fulfilled" ? r.value.data : null;
 
-        // execute
+  //       // execute
 
-        const [
-          allInfo = null,
-          rfidRes = null,
-          cam1Res = null, cam2Res = null, cam3Res = null, cam4Res = null,
-          cam5Res = null, cam6Res = null, cam7Res = null, cam8Res = null,
-        ] = (await Promise.allSettled(requests)).map(safeData);
+  //       const [
+  //         allInfo = null,
+  //         rfidRes = null,
+  //         cam1Res = null, cam2Res = null, cam3Res = null, cam4Res = null,
+  //         cam5Res = null, cam6Res = null, cam7Res = null, cam8Res = null,
+  //       ] = (await Promise.allSettled(requests)).map(safeData);
 
-        setData({
-          allInfo: allInfo || null,
-          rfid: rfidRes || null,
-          barrier1: allInfo[1],
-          barrier2: allInfo[2],
-          barrier3: allInfo[3],
-          barrier4: allInfo[4],
-          cam1: cam1Res || null,
-          cam2: cam2Res || null,
-          cam3: cam3Res || null,
-          cam4: cam4Res || null,
-          cam5: cam5Res || null,
-          cam6: cam6Res || null,
-          cam7: cam7Res || null,
-          cam8: cam8Res || null,
-        });
-        setRed(allInfo[6] === 1)
-        setYellow(allInfo[5] === 1)
-        setGreen(allInfo[4] === 1)
-        setOperatorMode(allInfo[11] === 1)
-        setEntryGate(allInfo[9] ==1)
-        setExitGate(allInfo[7]==1)
-      } catch (error) {
-        console.error("PUU API error:", error);
-      } finally {
-        if (isFirstLoad) setLoader(false);
-        if (isFirstLoad) isFirstLoad = false;
-      }
-    };
+  //       setData({
+  //         allInfo: allInfo || null,
+  //         rfid: rfidRes || null,
+  //         barrier1: allInfo[1],
+  //         barrier2: allInfo[2],
+  //         barrier3: allInfo[3],
+  //         barrier4: allInfo[4],
+  //         cam1: cam1Res || null,
+  //         cam2: cam2Res || null,
+  //         cam3: cam3Res || null,
+  //         cam4: cam4Res || null,
+  //         cam5: cam5Res || null,
+  //         cam6: cam6Res || null,
+  //         cam7: cam7Res || null,
+  //         cam8: cam8Res || null,
+  //       });
+  //       setRed(allInfo[6] === 1)
+  //       setYellow(allInfo[5] === 1)
+  //       setGreen(allInfo[4] === 1)
+  //       setOperatorMode(allInfo[11] === 1)
+  //       setEntryGate(allInfo[9] ==1)
+  //       setExitGate(allInfo[7]==1)
+  //     } catch (error) {
+  //       console.error("PUU API error:", error);
+  //     } finally {
+  //       if (isFirstLoad) setLoader(false);
+  //       if (isFirstLoad) isFirstLoad = false;
+  //     }
+  //   };
 
-    fetchAllData();
-    const interval = setInterval(fetchAllData, 2000);
-    return () => clearInterval(interval);
-  }, [id]);
+  //   fetchAllData();
+  //   const interval = setInterval(fetchAllData, 2000);
+  //   return () => clearInterval(interval);
+  // }, [id]);
 
+  useEffect(() => {
+    fetchTransactions(currentPage);
+  }, [currentPage]);
   // ← REMOVED: if (loader) { return <div><Loader /></div>; }
 
   async function controlPuuByRemote(name: string, value: any) {
@@ -573,7 +580,7 @@ export default function PuuPage() {
 
             {/* Transaction Table */}
             <TransactionTable
-              transactions={paginatedTransactions}
+              transactions={transactions}
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={setCurrentPage}

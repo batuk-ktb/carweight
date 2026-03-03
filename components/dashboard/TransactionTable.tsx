@@ -1,22 +1,35 @@
 import React from 'react';
 import { Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export interface Transaction {
-  id: string;
-  plateNumber: string;
-  material: string;
-  grossWeight: number;
-  tareWeight: number;
-  netWeight: number;
-  containerWeights: {
-    c1: number;
-    c2: number;
-    c3: number;
-    c4: number;
-  };
-  timestamp: string;
+interface Transaction {
+  id: number;
+  puuName: string;
+  puuId: number;
+  Weight: number;
+  tag_id: string | null;
+  tag_date: string | null;      // "YYYY-MM-DD HH:MM:SS" формат
+  created_at: string;           // "YYYY-MM-DD HH:MM:SS"
+  containers: Containers;
 }
 
+interface Containers {
+  conR1: Container | null;
+  conL1: Container | null;
+  conR2: Container | null;
+  conL2: Container | null;
+  conR3: Container | null;
+  conL3: Container | null;
+  conR4: Container | null;
+  conL4: Container | null;
+}
+
+interface Container {
+  id: number;
+  container_id: string | null;
+  date: string | null;           // "YYYY-MM-DD HH:MM:SS"
+  control_digit: string | null;
+  readconfidence: number | null;
+}
 interface TransactionTableProps {
   transactions: Transaction[];
   currentPage: number;
@@ -41,25 +54,22 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
         <table className="w-full min-w-[900px]">
           <thead>
             <tr className="bg-[#252f3f]">
-              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm">ID</th>
-              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm">Plate Number</th>
-              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm">Material</th>
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">Gross (kg)</th>
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">Tare (kg)</th>
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">Net (kg)</th>
-              <th className="px-4 py-3 text-center text-gray-400 font-medium text-sm" colSpan={4}>
-                Container Weights (kg)
-              </th>
+              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">Weight (kg)</th>
+              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">RFID</th>
+              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">RFID date</th>
+              {/* <th className="px-4 py-3 text-center text-gray-400 font-medium text-sm" colSpan={4}>
+                Container
+              </th> */}
               <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm">Timestamp</th>
             </tr>
-            <tr className="bg-[#1e2836]">
+            {/* <tr className="bg-[#1e2836]">
               <th colSpan={6}></th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C1</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C2</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C3</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C4</th>
               <th></th>
-            </tr>
+            </tr> */}
           </thead>
           <tbody>
             {transactions.map((tx, index) => (
@@ -69,10 +79,10 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                   index % 2 === 0 ? 'bg-[#1a2332]' : 'bg-[#1e2836]'
                 }`}
               >
-                <td className="px-4 py-3 text-white font-mono text-sm">{tx.id}</td>
-                <td className="px-4 py-3 text-white font-bold">{tx.plateNumber}</td>
-                <td className="px-4 py-3 text-gray-300">{tx.material}</td>
-                <td className="px-4 py-3 text-right text-gray-300 font-mono">
+                <td className="px-4 py-3 text-gray-300">{tx.Weight}</td>
+                <td className="px-4 py-3 text-white font-bold">{tx.tag_id}</td>
+                <td className="px-4 py-3 text-gray-300">{tx.tag_date}</td>
+                {/* <td className="px-4 py-3 text-right text-gray-300 font-mono">
                   {tx.grossWeight.toLocaleString()}
                 </td>
                 <td className="px-4 py-3 text-right text-gray-300 font-mono">
@@ -92,9 +102,9 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                 </td>
                 <td className="px-2 py-3 text-center text-gray-300 font-mono text-sm">
                   {tx.containerWeights.c4.toLocaleString()}
-                </td>
+                </td> */}
                 <td className="px-4 py-3 text-gray-400 text-sm whitespace-nowrap">
-                  {tx.timestamp}
+                  {tx.created_at}
                 </td>
               </tr>
             ))}
