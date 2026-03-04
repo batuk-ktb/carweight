@@ -53,14 +53,14 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[900px]">
           <thead>
-            <tr className="bg-[#252f3f]">
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">Weight (kg)</th>
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">RFID</th>
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm">RFID date</th>
-              {/* <th className="px-4 py-3 text-center text-gray-400 font-medium text-sm" colSpan={4}>
+            <tr className="bg-[#252f3f] grid grid-cols-4">
+              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">Weight (kg)</th>
+              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID</th>
+              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID date</th>
+              {/* <th className="px-4 py-3 text-center text-gray-400 font-medium text-sm" colSpan={4}> flex items-center justify-start
                 Container
               </th> */}
-              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm">Timestamp</th>
+              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm flex items-center justify-start">Timestamp</th>
             </tr>
             {/* <tr className="bg-[#1e2836]">
               <th colSpan={6}></th>
@@ -75,13 +75,13 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
             {transactions.map((tx, index) => (
               <tr 
                 key={tx.id}
-                className={`border-b border-gray-800 hover:bg-[#252f3f] transition-colors ${
+                className={` grid grid-cols-4 border-b border-gray-800 hover:bg-[#252f3f] transition-colors ${
                   index % 2 === 0 ? 'bg-[#1a2332]' : 'bg-[#1e2836]'
                 }`}
               >
-                <td className="px-4 py-3 text-gray-300">{tx.Weight}</td>
-                <td className="px-4 py-3 text-white font-bold">{tx.tag_id}</td>
-                <td className="px-4 py-3 text-gray-300">{tx.tag_date}</td>
+                <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.Weight}</td>
+                <td className="px-4 py-3 text-white font-bold  flex items-center justify-end">{tx.tag_id}</td>
+                <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_date}</td>
                 {/* <td className="px-4 py-3 text-right text-gray-300 font-mono">
                   {tx.grossWeight.toLocaleString()}
                 </td>
@@ -103,7 +103,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                 <td className="px-2 py-3 text-center text-gray-300 font-mono text-sm">
                   {tx.containerWeights.c4.toLocaleString()}
                 </td> */}
-                <td className="px-4 py-3 text-gray-400 text-sm whitespace-nowrap">
+                <td className="px-4 py-3 text-gray-400 text-sm whitespace-nowrap  flex items-center justify-end">
                   {tx.created_at}
                 </td>
               </tr>
