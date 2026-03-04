@@ -6,9 +6,14 @@ const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
+  let { pathname } = req.nextUrl;
 
   if (!token) return NextResponse.redirect(new URL("/login", req.url));
 
+  if (pathname === "/") {
+        return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+  
   try {
     await jwtVerify(token, SECRET);
     return NextResponse.next();
@@ -18,5 +23,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*","/puu/:path*","/"],
 };
