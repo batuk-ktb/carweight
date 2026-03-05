@@ -140,7 +140,7 @@ export default function PuuPage() {
       } : {};
 
       const bodyData = { ...baseData, ...containerData };
-      const url = "http://127.0.0.1:8000/api/transaction/" //"https://172.16.92.6/TestServer" // JSON ETT server URL
+      const url = `${CAMERA_SERVER_URL}/api/transaction/` //"https://172.16.92.6/TestServer" // JSON ETT server URL
       const response = await axios.post(
         url, 
         bodyData, // write data
@@ -173,7 +173,7 @@ export default function PuuPage() {
   console.log("-", MODBUS_SERVER_URL, CAMERA_SERVER_URL)
 
   const fetchTransactions = async (page: number) => {
-    const API_URL = "http://127.0.0.1:8000"//"http://172.16.92.6:8000";
+    const API_URL =CAMERA_SERVER_URL //"http://172.16.92.6:8000";
     try {
       const res = await axios.get(
         `${API_URL}/api/transaction/?puuId=${id}&page=${page}`
@@ -186,81 +186,81 @@ export default function PuuPage() {
     }
   };
 
-  // useEffect(() => {
-  //   if (!id) return;
-  //   let isFirstLoad = true;
-  //   const fetchAllData = async () => {
-  //     if (isFirstLoad) setLoader(true);
-  //     try {
+  useEffect(() => {
+    if (!id) return;
+    let isFirstLoad = true;
+    const fetchAllData = async () => {
+      if (isFirstLoad) setLoader(true);
+      try {
         
-  //       const requests = [];
+        const requests = [];
 
-  //       // modbus
-  //       requests.push(
-  //         axios.get(`${MODBUS_SERVER_URL}/read/3/${(id - 1) * 30}/30`)
-  //       );
+        // modbus
+        requests.push(
+          axios.get(`${MODBUS_SERVER_URL}/read/3/${(id - 1) * 30}/30`)
+        );
 
-  //       // rfid
-  //       requests.push(
-  //         axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[id].rfid}`)
-  //       );
+        // rfid
+        requests.push(
+          axios.get(`${CAMERA_SERVER_URL}/api/tagreader/?ipaddress=${ipCameraList[id].rfid}`)
+        );
 
-  //       if(id < 6){
-  //         // cameras 1-8
-  //         for (let i = 1; i <= 8; i++) {
-  //           requests.push(
-  //             axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[id][`cam${i}`]}`)
-  //           );
-  //         }
-  //       }
+        if(id < 6){
+          // cameras 1-8
+          for (let i = 1; i <= 8; i++) {
+            requests.push(
+              axios.get(`${CAMERA_SERVER_URL}/api/camera/?ipaddress=${ipCameraList[id][`cam${i}`]}`)
+            );
+          }
+        }
 
-  //       // helper
-  //       const safeData = (r:any) =>
-  //         r.status === "fulfilled" ? r.value.data : null;
+        // helper
+        const safeData = (r:any) =>
+          r.status === "fulfilled" ? r.value.data : null;
 
-  //       // execute
+        // execute
 
-  //       const [
-  //         allInfo = null,
-  //         rfidRes = null,
-  //         cam1Res = null, cam2Res = null, cam3Res = null, cam4Res = null,
-  //         cam5Res = null, cam6Res = null, cam7Res = null, cam8Res = null,
-  //       ] = (await Promise.allSettled(requests)).map(safeData);
+        const [
+          allInfo = null,
+          rfidRes = null,
+          cam1Res = null, cam2Res = null, cam3Res = null, cam4Res = null,
+          cam5Res = null, cam6Res = null, cam7Res = null, cam8Res = null,
+        ] = (await Promise.allSettled(requests)).map(safeData);
 
-  //       setData({
-  //         allInfo: allInfo || null,
-  //         rfid: rfidRes || null,
-  //         barrier1: allInfo[1],
-  //         barrier2: allInfo[2],
-  //         barrier3: allInfo[3],
-  //         barrier4: allInfo[4],
-  //         cam1: cam1Res || null,
-  //         cam2: cam2Res || null,
-  //         cam3: cam3Res || null,
-  //         cam4: cam4Res || null,
-  //         cam5: cam5Res || null,
-  //         cam6: cam6Res || null,
-  //         cam7: cam7Res || null,
-  //         cam8: cam8Res || null,
-  //       });
-  //       setRed(allInfo[6] === 1)
-  //       setYellow(allInfo[5] === 1)
-  //       setGreen(allInfo[4] === 1)
-  //       setOperatorMode(allInfo[11] === 1)
-  //       setEntryGate(allInfo[9] ==1)
-  //       setExitGate(allInfo[7]==1)
-  //     } catch (error) {
-  //       console.error("PUU API error:", error);
-  //     } finally {
-  //       if (isFirstLoad) setLoader(false);
-  //       if (isFirstLoad) isFirstLoad = false;
-  //     }
-  //   };
+        setData({
+          allInfo: allInfo || null,
+          rfid: rfidRes || null,
+          barrier1: allInfo[1],
+          barrier2: allInfo[2],
+          barrier3: allInfo[3],
+          barrier4: allInfo[4],
+          cam1: cam1Res || null,
+          cam2: cam2Res || null,
+          cam3: cam3Res || null,
+          cam4: cam4Res || null,
+          cam5: cam5Res || null,
+          cam6: cam6Res || null,
+          cam7: cam7Res || null,
+          cam8: cam8Res || null,
+        });
+        setRed(allInfo[6] === 1)
+        setYellow(allInfo[5] === 1)
+        setGreen(allInfo[4] === 1)
+        setOperatorMode(allInfo[11] === 1)
+        setEntryGate(allInfo[9] ==1)
+        setExitGate(allInfo[7]==1)
+      } catch (error) {
+        console.error("PUU API error:", error);
+      } finally {
+        if (isFirstLoad) setLoader(false);
+        if (isFirstLoad) isFirstLoad = false;
+      }
+    };
 
-  //   fetchAllData();
-  //   const interval = setInterval(fetchAllData, 2000);
-  //   return () => clearInterval(interval);
-  // }, [id]);
+    fetchAllData();
+    const interval = setInterval(fetchAllData, 2000);
+    return () => clearInterval(interval);
+  }, [id]);
 
   useEffect(() => {
     fetchTransactions(currentPage);
