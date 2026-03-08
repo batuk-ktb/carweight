@@ -79,7 +79,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                 }`}
               >
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.Weight}</td>
-                <td className="px-4 py-3 text-white font-bold  flex items-center justify-end">{tx.tag_id}</td>
+                <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_id}</td>
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_date}</td>
                 <td className="px-4 py-3 text-right text-gray-300 font-mono">
                   <p>
@@ -113,7 +113,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     {(tx?.containers?.conL4?.container_id || '').toLocaleString()}
                   </p>
                 </td>
-                <td className="px-4 py-3 text-gray-400 text-sm whitespace-nowrap  flex items-center justify-end">
+                <td className="px-4 py-3 text-gray-300 flex items-center justify-end">
                   {tx.created_at}
                 </td>
               </tr>
