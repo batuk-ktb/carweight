@@ -55,19 +55,14 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
         <table className="w-full min-w-[900px] table-auto">
           <thead>
             <tr className="bg-[#252f3f] ">
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">Weight (kg)</th>
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID</th>
-              <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID date</th>
-              {/* <th className="px-4 py-3 text-center text-gray-400 font-medium text-sm" colSpan={4}> flex items-center justify-start
-                Container
-              </th> */}
-            {/* </tr>
-            <tr className="bg-[#1e2836]"> */}
-              <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C1</th>
-              <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C2</th>
-              <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C3</th>
-              <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C4</th>
-              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm flex items-center justify-start">Timestamp</th>
+              <th className="px-4 py-3 text-center text-gray-400 ">Weight (kg)</th>
+              <th className="px-4 py-3 text-center text-gray-400 ">RFID</th>
+              <th className="px-4 py-3 text-center text-gray-400 ">RFID date</th>
+              <th className="px-2 py-1 text-center text-gray-400 ">C1</th>
+              <th className="px-2 py-1 text-center text-gray-400 ">C2</th>
+              <th className="px-2 py-1 text-center text-gray-400 ">C3</th>
+              <th className="px-2 py-1 text-center text-gray-400 ">C4</th>
+              <th className="px-4 py-3 text-center text-gray-400 ">Timestamp</th>
             </tr>
           </thead>
           <tbody>
@@ -78,10 +73,10 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                   index % 2 === 0 ? 'bg-[#1a2332]' : 'bg-[#1e2836]'
                 }`}
               >
-                <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.Weight}</td>
-                <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_id}</td>
-                <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_date}</td>
-                <td className="px-4 py-3 text-right text-gray-300 font-mono">
+                <td className="px-4 py-3 text-right text-gray-300">{tx.Weight}</td>
+                <td className="px-4 py-3 text-right text-gray-300">{tx.tag_id}</td>
+                <td className="px-4 py-3 text-right text-gray-300">{tx.tag_date}</td>
+                <td className="px-4 py-3 text-right text-gray-300">
                   <p>
                     {(tx?.containers?.conR1?.container_id || '').toLocaleString()}
                   </p>
@@ -89,7 +84,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     {(tx?.containers?.conL1?.container_id || '').toLocaleString()}
                   </p>
                 </td>
-                <td className="px-4 py-3 text-right text-gray-300 font-mono">
+                <td className="px-4 py-3 text-right text-gray-300">
                   <p>
                     {(tx?.containers?.conR2?.container_id || '').toLocaleString()}
                   </p>
@@ -97,7 +92,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     {(tx?.containers?.conL2?.container_id || '').toLocaleString()}
                   </p>
                 </td>
-                <td className="px-4 py-3 text-right text-gray-300 font-mono">
+                <td className="px-4 py-3 text-right text-gray-300">
                   <p>
                     {(tx?.containers?.conR3?.container_id || '').toLocaleString()}
                   </p>
@@ -105,7 +100,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     {(tx?.containers?.conL3?.container_id || '').toLocaleString()}
                   </p>
                 </td>
-                <td className="px-2 py-3 text-center text-gray-300 font-mono">
+                <td className="px-2 py-3 text-right text-gray-300">
                   <p>
                     {(tx?.containers?.conR4?.container_id || '').toLocaleString()}
                   </p>
@@ -113,7 +108,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     {(tx?.containers?.conL4?.container_id || '').toLocaleString()}
                   </p>
                 </td>
-                <td className="px-4 py-3 text-gray-300 flex items-center justify-end">
+                <td className="px-4 py-3 text-right  text-gray-300">
                   {tx.created_at}
                 </td>
               </tr>
