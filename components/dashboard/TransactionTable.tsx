@@ -79,7 +79,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                 }`}
               >
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.Weight}</td>
-                <td className="px-4 py-3 text-gray-300  flex items-center justify-end overflow-hidden">{tx.tag_id}</td>
+                <td className="px-4 py-3 text-gray-300  flex items-center justify-end overflow-hidden overflow-scroll">{tx.tag_id}</td>
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_date}</td>
                 <td className="px-4 py-3 text-right text-gray-300 font-mono">
                   <p>
