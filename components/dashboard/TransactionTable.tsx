@@ -61,14 +61,14 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
               {/* <th className="px-4 py-3 text-center text-gray-400 font-medium text-sm" colSpan={4}> flex items-center justify-start
                 Container
               </th> */}
-              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm flex items-center justify-start">Timestamp</th>
             {/* </tr>
             <tr className="bg-[#1e2836]"> */}
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C1</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C2</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C3</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C4</th>
-              <th></th>
+              <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm flex items-center justify-start">Timestamp</th>
+
             </tr>
           </thead>
           <tbody>
