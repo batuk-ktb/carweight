@@ -51,8 +51,8 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
         <span className="text-white font-semibold">Recent Transactions</span>
       </div>
       
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[900px]">
+      <div>
+        <table className="w-full min-w-[900px] overflow-x-auto">
           <thead>
             <tr className="bg-[#252f3f] grid grid-cols-8">
               <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">Weight (kg)</th>
@@ -79,7 +79,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                 }`}
               >
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.Weight}</td>
-                <td className="px-4 py-3 text-gray-300  flex items-center justify-end overflow-hidden overflow-scroll">{tx.tag_id}</td>
+                <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_id}</td>
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_date}</td>
                 <td className="px-4 py-3 text-right text-gray-300 font-mono">
                   <p>
