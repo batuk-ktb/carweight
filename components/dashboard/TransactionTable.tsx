@@ -51,10 +51,10 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
         <span className="text-white font-semibold">Recent Transactions</span>
       </div>
       
-      <div>
-        <table className="w-full min-w-[900px] overflow-x-auto">
+      <div className='w-full overflow-x-auto'>
+        <table className="w-full min-w-[900px] table-auto">
           <thead>
-            <tr className="bg-[#252f3f] grid grid-cols-8">
+            <tr className="bg-[#252f3f] ">
               <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">Weight (kg)</th>
               <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID</th>
               <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID date</th>
@@ -74,7 +74,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
             {transactions.map((tx, index) => (
               <tr 
                 key={tx.id}
-                className={` grid grid-cols-8 border-b border-gray-800 hover:bg-[#252f3f] transition-colors ${
+                className={`border-b border-gray-800 hover:bg-[#252f3f] transition-colors ${
                   index % 2 === 0 ? 'bg-[#1a2332]' : 'bg-[#1e2836]'
                 }`}
               >
