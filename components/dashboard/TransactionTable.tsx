@@ -68,7 +68,6 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C3</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C4</th>
               <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm flex items-center justify-start">Timestamp</th>
-
             </tr>
           </thead>
           <tbody>
@@ -98,7 +97,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     {(tx?.containers?.conL2?.container_id || '').toLocaleString()}
                   </p>
                 </td>
-                <td className="px-4 py-3 text-right text-yellow-500 font-mono font-bold">
+                <td className="px-4 py-3 text-right text-gray-300 font-mono">
                   <p>
                     {(tx?.containers?.conR3?.container_id || '').toLocaleString()}
                   </p>
@@ -106,7 +105,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     {(tx?.containers?.conL3?.container_id || '').toLocaleString()}
                   </p>
                 </td>
-                <td className="px-2 py-3 text-center text-gray-300 font-mono text-sm">
+                <td className="px-2 py-3 text-center text-gray-300 font-mono">
                   <p>
                     {(tx?.containers?.conR4?.container_id || '').toLocaleString()}
                   </p>
