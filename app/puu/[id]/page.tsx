@@ -125,13 +125,13 @@ export default function PuuPage() {
       // Container data — only for Оролт (id 1–5)
       const containerData = Number(id) <= 5 ? {
         conR1: { id: getContainerId("cam1", data?.cam1?.container) || data?.cam1?.container, date: data?.cam1?.date, control_digit: data?.cam1?.controldigit, readconfidence: data?.cam1?.readconfidence, plateImage: data?.cam1?.plateImage },
-        conL1: { id: getContainerId("cam2", data?.cam2?.container) || data?.cam2?.container, date: data?.cam2?.date, control_digit: data?.cam2?.controldigit, readconfidence: data?.cam2?.readconfidence, plateImage: data?.cam1?.plateImage },
-        conR2: { id: getContainerId("cam3", data?.cam3?.container) || data?.cam3?.container, date: data?.cam3?.date, control_digit: data?.cam3?.controldigit, readconfidence: data?.cam3?.readconfidence, plateImage: data?.cam1?.plateImage },
-        conL2: { id: getContainerId("cam4", data?.cam4?.container) || data?.cam4?.container, date: data?.cam4?.date, control_digit: data?.cam4?.controldigit, readconfidence: data?.cam4?.readconfidence, plateImage: data?.cam1?.plateImage },
-        conR3: { id: getContainerId("cam5", data?.cam5?.container) || data?.cam5?.container, date: data?.cam5?.date, control_digit: data?.cam5?.controldigit, readconfidence: data?.cam5?.readconfidence, plateImage: data?.cam1?.plateImage },
-        conL3: { id: getContainerId("cam6", data?.cam6?.container) || data?.cam6?.container, date: data?.cam6?.date, control_digit: data?.cam6?.controldigit, readconfidence: data?.cam6?.readconfidence, plateImage: data?.cam1?.plateImage },
-        conR4: { id: getContainerId("cam7", data?.cam7?.container) || data?.cam7?.container, date: data?.cam7?.date, control_digit: data?.cam7?.controldigit, readconfidence: data?.cam7?.readconfidence, plateImage: data?.cam1?.plateImage },
-        conL4: { id: getContainerId("cam8", data?.cam8?.container) || data?.cam8?.container, date: data?.cam8?.date, control_digit: data?.cam8?.controldigit, readconfidence: data?.cam8?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conL1: { id: getContainerId("cam2", data?.cam2?.container) || data?.cam2?.container, date: data?.cam2?.date, control_digit: data?.cam2?.controldigit, readconfidence: data?.cam2?.readconfidence, plateImage: data?.cam2?.plateImage },
+        conR2: { id: getContainerId("cam3", data?.cam3?.container) || data?.cam3?.container, date: data?.cam3?.date, control_digit: data?.cam3?.controldigit, readconfidence: data?.cam3?.readconfidence, plateImage: data?.cam3?.plateImage },
+        conL2: { id: getContainerId("cam4", data?.cam4?.container) || data?.cam4?.container, date: data?.cam4?.date, control_digit: data?.cam4?.controldigit, readconfidence: data?.cam4?.readconfidence, plateImage: data?.cam4?.plateImage },
+        conR3: { id: getContainerId("cam5", data?.cam5?.container) || data?.cam5?.container, date: data?.cam5?.date, control_digit: data?.cam5?.controldigit, readconfidence: data?.cam5?.readconfidence, plateImage: data?.cam5?.plateImage },
+        conL3: { id: getContainerId("cam6", data?.cam6?.container) || data?.cam6?.container, date: data?.cam6?.date, control_digit: data?.cam6?.controldigit, readconfidence: data?.cam6?.readconfidence, plateImage: data?.cam6?.plateImage },
+        conR4: { id: getContainerId("cam7", data?.cam7?.container) || data?.cam7?.container, date: data?.cam7?.date, control_digit: data?.cam7?.controldigit, readconfidence: data?.cam7?.readconfidence, plateImage: data?.cam7?.plateImage },
+        conL4: { id: getContainerId("cam8", data?.cam8?.container) || data?.cam8?.container, date: data?.cam8?.date, control_digit: data?.cam8?.controldigit, readconfidence: data?.cam8?.readconfidence, plateImage: data?.cam8?.plateImage },
       } : {};
 
       const bodyData = { ...baseData, ...containerData };
