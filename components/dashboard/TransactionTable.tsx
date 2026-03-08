@@ -29,6 +29,7 @@ interface Container {
   date: string | null;           // "YYYY-MM-DD HH:MM:SS"
   control_digit: string | null;
   readconfidence: number | null;
+  plateImage: string | null;
 }
 interface TransactionTableProps {
   transactions: Transaction[];
@@ -53,7 +54,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[900px]">
           <thead>
-            <tr className="bg-[#252f3f] grid grid-cols-4">
+            <tr className="bg-[#252f3f] grid grid-cols-8">
               <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">Weight (kg)</th>
               <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID</th>
               <th className="px-4 py-3 text-right text-gray-400 font-medium text-sm flex items-center justify-start">RFID date</th>
@@ -61,48 +62,58 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                 Container
               </th> */}
               <th className="px-4 py-3 text-left text-gray-400 font-medium text-sm flex items-center justify-start">Timestamp</th>
-            </tr>
-            {/* <tr className="bg-[#1e2836]">
-              <th colSpan={6}></th>
+            {/* </tr>
+            <tr className="bg-[#1e2836]"> */}
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C1</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C2</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C3</th>
               <th className="px-2 py-1 text-center text-gray-500 font-normal text-xs">C4</th>
               <th></th>
-            </tr> */}
+            </tr>
           </thead>
           <tbody>
             {transactions.map((tx, index) => (
               <tr 
                 key={tx.id}
-                className={` grid grid-cols-4 border-b border-gray-800 hover:bg-[#252f3f] transition-colors ${
+                className={` grid grid-cols-8 border-b border-gray-800 hover:bg-[#252f3f] transition-colors ${
                   index % 2 === 0 ? 'bg-[#1a2332]' : 'bg-[#1e2836]'
                 }`}
               >
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.Weight}</td>
                 <td className="px-4 py-3 text-white font-bold  flex items-center justify-end">{tx.tag_id}</td>
                 <td className="px-4 py-3 text-gray-300  flex items-center justify-end">{tx.tag_date}</td>
-                {/* <td className="px-4 py-3 text-right text-gray-300 font-mono">
-                  {tx.grossWeight.toLocaleString()}
+                <td className="px-4 py-3 text-right text-gray-300 font-mono">
+                  <p>
+                    {(tx?.containers?.conR1?.container_id || '').toLocaleString()}
+                  </p>
+                  <p>
+                    {(tx?.containers?.conL1?.container_id || '').toLocaleString()}
+                  </p>
                 </td>
                 <td className="px-4 py-3 text-right text-gray-300 font-mono">
-                  {tx.tareWeight.toLocaleString()}
+                  <p>
+                    {(tx?.containers?.conR2?.container_id || '').toLocaleString()}
+                  </p>
+                  <p>
+                    {(tx?.containers?.conL2?.container_id || '').toLocaleString()}
+                  </p>
                 </td>
                 <td className="px-4 py-3 text-right text-yellow-500 font-mono font-bold">
-                  {tx.netWeight.toLocaleString()}
+                  <p>
+                    {(tx?.containers?.conR3?.container_id || '').toLocaleString()}
+                  </p>
+                  <p>
+                    {(tx?.containers?.conL3?.container_id || '').toLocaleString()}
+                  </p>
                 </td>
                 <td className="px-2 py-3 text-center text-gray-300 font-mono text-sm">
-                  {tx.containerWeights.c1.toLocaleString()}
+                  <p>
+                    {(tx?.containers?.conR4?.container_id || '').toLocaleString()}
+                  </p>
+                  <p>
+                    {(tx?.containers?.conL4?.container_id || '').toLocaleString()}
+                  </p>
                 </td>
-                <td className="px-2 py-3 text-center text-gray-300 font-mono text-sm">
-                  {tx.containerWeights.c2.toLocaleString()}
-                </td>
-                <td className="px-2 py-3 text-center text-gray-300 font-mono text-sm">
-                  {tx.containerWeights.c3.toLocaleString()}
-                </td>
-                <td className="px-2 py-3 text-center text-gray-300 font-mono text-sm">
-                  {tx.containerWeights.c4.toLocaleString()}
-                </td> */}
                 <td className="px-4 py-3 text-gray-400 text-sm whitespace-nowrap  flex items-center justify-end">
                   {tx.created_at}
                 </td>

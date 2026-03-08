@@ -124,14 +124,14 @@ export default function PuuPage() {
 
       // Container data — only for Оролт (id 1–5)
       const containerData = Number(id) <= 5 ? {
-        conR1: { id: getContainerId("cam1", data?.cam1?.container) || data?.cam1?.container, date: data?.cam1?.date, control_digit: data?.cam1?.controldigit, readconfidence: data?.cam1?.readconfidence },
-        conL1: { id: getContainerId("cam2", data?.cam2?.container) || data?.cam2?.container, date: data?.cam2?.date, control_digit: data?.cam2?.controldigit, readconfidence: data?.cam2?.readconfidence },
-        conR2: { id: getContainerId("cam3", data?.cam3?.container) || data?.cam3?.container, date: data?.cam3?.date, control_digit: data?.cam3?.controldigit, readconfidence: data?.cam3?.readconfidence },
-        conL2: { id: getContainerId("cam4", data?.cam4?.container) || data?.cam4?.container, date: data?.cam4?.date, control_digit: data?.cam4?.controldigit, readconfidence: data?.cam4?.readconfidence },
-        conR3: { id: getContainerId("cam5", data?.cam5?.container) || data?.cam5?.container, date: data?.cam5?.date, control_digit: data?.cam5?.controldigit, readconfidence: data?.cam5?.readconfidence },
-        conL3: { id: getContainerId("cam6", data?.cam6?.container) || data?.cam6?.container, date: data?.cam6?.date, control_digit: data?.cam6?.controldigit, readconfidence: data?.cam6?.readconfidence },
-        conR4: { id: getContainerId("cam7", data?.cam7?.container) || data?.cam7?.container, date: data?.cam7?.date, control_digit: data?.cam7?.controldigit, readconfidence: data?.cam7?.readconfidence },
-        conL4: { id: getContainerId("cam8", data?.cam8?.container) || data?.cam8?.container, date: data?.cam8?.date, control_digit: data?.cam8?.controldigit, readconfidence: data?.cam8?.readconfidence },
+        conR1: { id: getContainerId("cam1", data?.cam1?.container) || data?.cam1?.container, date: data?.cam1?.date, control_digit: data?.cam1?.controldigit, readconfidence: data?.cam1?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conL1: { id: getContainerId("cam2", data?.cam2?.container) || data?.cam2?.container, date: data?.cam2?.date, control_digit: data?.cam2?.controldigit, readconfidence: data?.cam2?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conR2: { id: getContainerId("cam3", data?.cam3?.container) || data?.cam3?.container, date: data?.cam3?.date, control_digit: data?.cam3?.controldigit, readconfidence: data?.cam3?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conL2: { id: getContainerId("cam4", data?.cam4?.container) || data?.cam4?.container, date: data?.cam4?.date, control_digit: data?.cam4?.controldigit, readconfidence: data?.cam4?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conR3: { id: getContainerId("cam5", data?.cam5?.container) || data?.cam5?.container, date: data?.cam5?.date, control_digit: data?.cam5?.controldigit, readconfidence: data?.cam5?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conL3: { id: getContainerId("cam6", data?.cam6?.container) || data?.cam6?.container, date: data?.cam6?.date, control_digit: data?.cam6?.controldigit, readconfidence: data?.cam6?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conR4: { id: getContainerId("cam7", data?.cam7?.container) || data?.cam7?.container, date: data?.cam7?.date, control_digit: data?.cam7?.controldigit, readconfidence: data?.cam7?.readconfidence, plateImage: data?.cam1?.plateImage },
+        conL4: { id: getContainerId("cam8", data?.cam8?.container) || data?.cam8?.container, date: data?.cam8?.date, control_digit: data?.cam8?.controldigit, readconfidence: data?.cam8?.readconfidence, plateImage: data?.cam1?.plateImage },
       } : {};
 
       const bodyData = { ...baseData, ...containerData };
@@ -367,14 +367,14 @@ export default function PuuPage() {
                   {/* Container ID table — only for Оролт пүү (id < 6) */}
                   {id < 6 && (() => {
                     const allCams = [
-                      { side: "Баруун чингэлэг 1", camKey: "cam1", containerId: getContainerId("cam1", data?.cam1?.container), date: getContainerDate("cam1", data?.cam1?.date), confidence: cleared ? undefined : data?.cam1?.readconfidence, image: cleared ? undefined : data?.cam1?.image },
-                      { side: "Зүүн чингэлэг 1",   camKey: "cam2", containerId: getContainerId("cam2", data?.cam2?.container), date: getContainerDate("cam2", data?.cam2?.date), confidence: cleared ? undefined : data?.cam2?.readconfidence, image: cleared ? undefined : data?.cam2?.image },
-                      { side: "Баруун чингэлэг 2", camKey: "cam3", containerId: getContainerId("cam3", data?.cam3?.container), date: getContainerDate("cam3", data?.cam3?.date), confidence: cleared ? undefined : data?.cam3?.readconfidence, image: cleared ? undefined : data?.cam3?.image },
-                      { side: "Зүүн чингэлэг 2",   camKey: "cam4", containerId: getContainerId("cam4", data?.cam4?.container), date: getContainerDate("cam4", data?.cam4?.date), confidence: cleared ? undefined : data?.cam4?.readconfidence, image: cleared ? undefined : data?.cam4?.image },
-                      { side: "Баруун чингэлэг 3", camKey: "cam5", containerId: getContainerId("cam5", data?.cam5?.container), date: getContainerDate("cam5", data?.cam5?.date), confidence: cleared ? undefined : data?.cam5?.readconfidence, image: cleared ? undefined : data?.cam5?.image },
-                      { side: "Зүүн чингэлэг 3",   camKey: "cam6", containerId: getContainerId("cam6", data?.cam6?.container), date: getContainerDate("cam6", data?.cam6?.date), confidence: cleared ? undefined : data?.cam6?.readconfidence, image: cleared ? undefined : data?.cam6?.image },
-                      { side: "Баруун чингэлэг 4", camKey: "cam7", containerId: getContainerId("cam7", data?.cam7?.container), date: getContainerDate("cam7", data?.cam7?.date), confidence: cleared ? undefined : data?.cam7?.readconfidence, image: cleared ? undefined : data?.cam7?.image },
-                      { side: "Зүүн чингэлэг 4",   camKey: "cam8", containerId: getContainerId("cam8", data?.cam8?.container), date: getContainerDate("cam8", data?.cam8?.date), confidence: cleared ? undefined : data?.cam8?.readconfidence, image: cleared ? undefined : data?.cam8?.image },
+                      { side: "Баруун чингэлэг 1", camKey: "cam1", containerId: getContainerId("cam1", data?.cam1?.container), date: getContainerDate("cam1", data?.cam1?.date), confidence: cleared ? undefined : data?.cam1?.readconfidence, image: cleared ? undefined : data?.cam1?.plateImage },
+                      { side: "Зүүн чингэлэг 1",   camKey: "cam2", containerId: getContainerId("cam2", data?.cam2?.container), date: getContainerDate("cam2", data?.cam2?.date), confidence: cleared ? undefined : data?.cam2?.readconfidence, image: cleared ? undefined : data?.cam2?.plateImage },
+                      { side: "Баруун чингэлэг 2", camKey: "cam3", containerId: getContainerId("cam3", data?.cam3?.container), date: getContainerDate("cam3", data?.cam3?.date), confidence: cleared ? undefined : data?.cam3?.readconfidence, image: cleared ? undefined : data?.cam3?.plateImage },
+                      { side: "Зүүн чингэлэг 2",   camKey: "cam4", containerId: getContainerId("cam4", data?.cam4?.container), date: getContainerDate("cam4", data?.cam4?.date), confidence: cleared ? undefined : data?.cam4?.readconfidence, image: cleared ? undefined : data?.cam4?.plateImage },
+                      { side: "Баруун чингэлэг 3", camKey: "cam5", containerId: getContainerId("cam5", data?.cam5?.container), date: getContainerDate("cam5", data?.cam5?.date), confidence: cleared ? undefined : data?.cam5?.readconfidence, image: cleared ? undefined : data?.cam5?.plateImage },
+                      { side: "Зүүн чингэлэг 3",   camKey: "cam6", containerId: getContainerId("cam6", data?.cam6?.container), date: getContainerDate("cam6", data?.cam6?.date), confidence: cleared ? undefined : data?.cam6?.readconfidence, image: cleared ? undefined : data?.cam6?.plateImage },
+                      { side: "Баруун чингэлэг 4", camKey: "cam7", containerId: getContainerId("cam7", data?.cam7?.container), date: getContainerDate("cam7", data?.cam7?.date), confidence: cleared ? undefined : data?.cam7?.readconfidence, image: cleared ? undefined : data?.cam7?.plateImage },
+                      { side: "Зүүн чингэлэг 4",   camKey: "cam8", containerId: getContainerId("cam8", data?.cam8?.container), date: getContainerDate("cam8", data?.cam8?.date), confidence: cleared ? undefined : data?.cam8?.readconfidence, image: cleared ? undefined : data?.cam8?.plateImage },
                     ];
                     return (
                       <div style={{ borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
