@@ -14,9 +14,10 @@ const PAGE_SIZE = 10;
 
 interface NavbarProps {
   puuStatus?: boolean[];
+  puuTitle?: string; // optional PUU-specific title from PuuPage
 }
 
-export default function Navbar({ puuStatus }: NavbarProps) {
+export default function Navbar({ puuStatus, puuTitle }: NavbarProps) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [time, setTime] = useState("");
@@ -87,7 +88,7 @@ export default function Navbar({ puuStatus }: NavbarProps) {
         <div style={{ position: "absolute", bottom: 0, left: 0, width: 30, height: 2, background: "linear-gradient(90deg, rgba(0,229,255,0.5), transparent)" }} />
         <div style={{ position: "absolute", bottom: 0, right: 0, width: 30, height: 2, background: "linear-gradient(270deg, rgba(0,229,255,0.5), transparent)" }} />
 
-        {/* Left: Hamburger + Logo + Title */}
+        {/* Left: Hamburger */}
         <div style={{ display: "flex", alignItems: "center", gap: 14, position: "relative" }}>
           <button
             onClick={() => setSidebarOpen(o => !o)}
@@ -115,12 +116,25 @@ export default function Navbar({ puuStatus }: NavbarProps) {
             ))}
           </button>
         </div>
-        {/* Center: name */}
 
-        <div style={{ fontSize: 26, fontWeight: 900, color: "#fff", letterSpacing: "0.08em", textTransform: "uppercase", lineHeight: 1 }}>
-        Автожингийн систем
+        {/* Center: title — shows PUU name when on a PUU page, otherwise static */}
+        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+          {puuTitle ? (
+            <>
+              <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", letterSpacing: "0.08em", textTransform: "uppercase", lineHeight: 1, whiteSpace: "nowrap" }}>
+                АВТОЖИНГИЙН СИСТЕМ{" "}
+                <span style={{ color: "#00e5ff" }}>{puuTitle}</span>
+              </div>
+              <div style={{ width: 50, height: 1, borderRadius: 1, background: "linear-gradient(90deg, transparent, rgba(0,229,255,0.5), transparent)" }} />
+            </>
+          ) : (
+            <div style={{ fontSize: 26, fontWeight: 900, color: "#fff", letterSpacing: "0.08em", textTransform: "uppercase", lineHeight: 1 }}>
+              Автожингийн систем
+            </div>
+          )}
         </div>
-        {/* Left side: live clock */}
+
+        {/* Right: live clock */}
         <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 8, background: "rgba(0,229,255,0.04)", border: "1px solid rgba(0,229,255,0.12)", borderRadius: 8, padding: "5px 14px" }}>
           <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#00e5ff", boxShadow: "0 0 6px rgba(0,229,255,0.9)", display: "inline-block", animation: "navpulse 1.5s infinite" }} />
           <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", letterSpacing: "0.12em" }}>{time}</span>
@@ -203,7 +217,6 @@ export default function Navbar({ puuStatus }: NavbarProps) {
                     onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0,229,255,0.02)"; e.currentTarget.style.borderColor = "rgba(0,229,255,0.06)"; }}
                     title={label}
                   >
-                    {/* Status dot */}
                     <div style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: s ? "#22c55e" : "#ef4444", boxShadow: s ? "0 0 8px rgba(34,197,94,0.8)" : "0 0 8px rgba(239,68,68,0.8)" }} />
                     <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", letterSpacing: "0.04em", flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                       {label}

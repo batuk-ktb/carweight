@@ -65,7 +65,7 @@ const TruckVisualization: React.FC<TruckVisualizationProps> = ({
 
   return (
     <div style={{ fontFamily: "'Courier New', monospace", background: "linear-gradient(160deg, #0d1117 0%, #0a1628 60%, #060d1a 100%)", borderRadius: "16px", padding: "24px", position: "relative", overflow: "hidden", boxShadow: "0 0 60px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
-      {/* Grid background */}
+      Grid background
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
       {/* Corner accents */}
@@ -76,7 +76,7 @@ const TruckVisualization: React.FC<TruckVisualizationProps> = ({
         { bottom: 0, right: 0, borderBottom: "2px solid rgba(255,255,255,0.25)", borderRight: "2px solid rgba(255,255,255,0.25)", borderRadius: "0 0 12px 0" },
       ].map((s, i) => <div key={i} style={{ position: "absolute", width: 40, height: 40, ...s }} />)}
 
-      {/* Header */}
+      Header
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, position: "relative" }}>
         <div>
           <div style={{ fontSize: 9, letterSpacing: "0.3em", color: "rgba(255,255,255,0.5)", textTransform: "uppercase", marginBottom: 2 }}>WIM — Container Tracking</div>

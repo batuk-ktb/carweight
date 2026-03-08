@@ -2,13 +2,13 @@ import React from 'react';
 import { Camera, Image } from 'lucide-react';
 
 interface CameraViewProps {
-  title: string;
+  //title: string;
   cameraId: string;   // cam1, cam2 гэх мэт (MediaMTX path)
   isCapturing?: boolean;
 }
 
 const CameraView: React.FC<CameraViewProps> = ({ 
-  title, 
+//  title, 
   cameraId,
   isCapturing = false 
 }) => {
@@ -21,7 +21,7 @@ const CameraView: React.FC<CameraViewProps> = ({
       <div className="bg-[#252f3f] px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Camera className="w-4 h-4 text-blue-400" />
-          <span className="text-white font-medium">{title}</span>
+          {/* <span className="text-white font-medium">{title}</span> */}
         </div>
         <span className="text-gray-400 text-sm font-mono">{cameraId}</span>
       </div>
